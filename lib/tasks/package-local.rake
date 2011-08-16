@@ -19,22 +19,29 @@
 
 require 'rake'
 require 'fileutils'
+require "packaging_configuration"
 
-# name of the package (base file name)
-PACKAGE_NAME = 'www'
-# target directory for the package file
-PACKAGE_DIR = 'package'
+def package_file_name
+  config = PackagingConfiguration.instance
+  config.package_name+config.version
+end
+
+def package_file_path
+  File.join(Dir.pwd,PackagingConfiguration.instance.package_target_dir,
+      package_file_name+".tar.bz2")
+end
 
 def remove_package_dir
+  package_target_dir = File.join(Dir.pwd,PackagingConfiguration.instance.package_target_dir,
+      package_file_name)
   # remove the old package directory
-  www_dir = File.join(Dir.pwd, PACKAGE_DIR, PACKAGE_NAME)
-  FileUtils.rm_rf(www_dir) if File.directory?(www_dir)
+  FileUtils.rm_rf(package_target_dir) if File.directory?(package_target_dir)
 end
 
 def remove_old_package
   # remove the old tarball
-  tarball = File.join(Dir.pwd, PACKAGE_DIR, "#{PACKAGE_NAME}.tar.bz2")
-  FileUtils.rm_rf(tarball) if File.exists?(tarball)
+  tarball_path = package_file_path
+  FileUtils.rm_rf(tarball_path) if File.exists?(tarball_path)
 end
 
 def package_clean
@@ -67,10 +74,10 @@ end
 # create new package task
 def create_package_task
   require 'rake/packagetask'
-
-  Rake::PackageTask.new(PACKAGE_NAME, :noversion) do |p|
+  config = PackagingConfiguration.instance
+  Rake::PackageTask.new(config.package_name, config.version) do |p|
     p.need_tar_bz2 = true
-    p.package_dir = PACKAGE_DIR
+    p.package_dir = PackagingConfiguration.instance.package_dir
 
     add_git_files p
 
@@ -80,16 +87,15 @@ def create_package_task
     p.package_files.exclude('./doc/app')
     # ignore backups
     p.package_files.exclude('./**/*.orig')
+    #ignore itself
     p.package_files.exclude('./package')
+    # ignore rcov result
     p.package_files.exclude('./coverage')
+    # no own database or schema
     p.package_files.exclude('./db/*.sqlite3')
     p.package_files.exclude('./db/schema.rb')
-    p.package_files.exclude('./log/*.log')
-    p.package_files.exclude('./vendor/plugins/rails_rcov')
-    p.package_files.exclude('./public/vendor/text/locale')
-    p.package_files.exclude('./public/vendor/text/po')
-    p.package_files.exclude('./public/vendor/images')
-    p.package_files.exclude('./public/vendor/stylesheets')
+    # no logs
+    p.package_files.exclude('./**/*.log')
   end
 end
 
@@ -105,7 +111,8 @@ task :"package-local" do
   create_package_task
 
   # execute the real package task
-  Rake::Task[:"#{PACKAGE_DIR}/#{PACKAGE_NAME}.tar.bz2"].invoke
+  config = PackagingConfiguration.instance
+  Rake::Task[package_file_path].invoke
 
   # remove the package dir, not needed anymore
   remove_package_dir

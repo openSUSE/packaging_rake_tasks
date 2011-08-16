@@ -19,28 +19,28 @@ require 'rake'
 
 class PackagingTasks
 
-    # a flag - load the tasks just once, multiple loading
-    # leads to multiple invocation of the same task
-    @@tasks_loaded = false
+  # a flag - load the tasks just once, multiple loading
+  # leads to multiple invocation of the same task
+  @@tasks_loaded = false
 
-    # load webservice *.rake files, exclude/include list can be specified
-    def self.loadTasks(params = {:include => ["*.rake"], :exclude => []})
-	return if @@tasks_loaded
-        params[:exclude] ||= []
-	params[:include] ||= ["*.rake"]
-        filelist = {}
+  # load webservice *.rake files, exclude/include list can be specified
+  def self.loadTasks(params = {:include => ["*.rake"], :exclude => []})
+    return if @@tasks_loaded
+    params[:exclude] ||= []
+    params[:include] ||= ["*.rake"]
+    filelist = {}
 
-        [:exclude,:include].each do |key|
-          list[key] = params[key].reduce([]) {|ret,file| ret += Dir["#{File.dirname(__FILE__)}/#{file}"] }
-        end
-
-	# load an include file only if it not in the exclude list
-	filelist[:include].each do |ext|
-	  load ext unless filelist[:exclude].include?(ext)
-	end
-
-	@@tasks_loaded = true
+    [:exclude,:include].each do |key|
+      list[key] = params[key].reduce([]) {|ret,file| ret += Dir["#{File.dirname(__FILE__)}/#{file}"] }
     end
+
+    # load an include file only if it not in the exclude list
+    filelist[:include].each do |ext|
+      load ext unless filelist[:exclude].include?(ext)
+    end
+
+    @@tasks_loaded = true
+  end
 end
 
 # vim: ft=ruby
