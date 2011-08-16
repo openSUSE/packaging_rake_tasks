@@ -18,6 +18,6 @@
 
 
 # load all webservice *.rake files
-require 'tasks/webservice_tasks'
-WebserviceTasks.loadTasks
+require 'tasks/packaging_tasks'
+PackagingTasks.loadTasks
 
