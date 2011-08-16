@@ -36,9 +36,7 @@ end
 
 def verbose(msg)
   # FIXME verbose seems to be on by default, but can use rake -q
-  if RakeFileUtils.verbose
-    puts msg
-  end
+  puts msg if RakeFileUtils.verbose
 end
 
 LIMIT = (ENV["LIMIT"] || 10).to_i

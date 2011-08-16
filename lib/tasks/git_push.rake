@@ -1,6 +1,4 @@
 #--
-# Webyast Webservice framework
-#
 # Copyright (C) 2009, 2010 Novell, Inc. 
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
@@ -20,7 +18,7 @@ require 'rake'
 
 desc "Push to git repository. Don't use directly, use push instead!"
 task :git_push do
-    out = `git push`
+    system "git push"
     raise if $?.exitstatus != 0
     puts '* GIT push OK'
 end
