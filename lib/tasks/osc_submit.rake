@@ -19,11 +19,12 @@
 require 'rake'
 
 
-desc "Submit package to Yast:Web osc repository (override project via OBS_PROJECT=)"
+desc "Submit package to Yast:Web osc repository"
 task :'osc_submit'  do
-  require File.join(File.dirname(__FILE__), "osc_prepare")
-  
-  obs_project, package_name = osc_prepare
+  config = PackagingConfiguration.instance
+  obs_project = config.obs_project
+  package_name = config.package_name
+  build_dist = config.obs_target
   
   puts "checking out package #{package_name} from project #{obs_project}"
   

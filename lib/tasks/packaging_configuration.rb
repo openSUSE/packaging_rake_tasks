@@ -4,10 +4,12 @@ class PackagingConfiguration
 
   def initialize
     @excluded_files = []
+    @obs_api = "https://api.opensuse.org/"
+    @obs_target = "openSUSE_Factory"
   end
 
   attr_writer :package_name, :package_dir, :version
-  attr_accessor :excluded_files
+  attr_accessor :excluded_files, :obs_project, :obs_api, :obs_target
 
   def package_name
     @package_name ||= Dir.pwd.split("/").last

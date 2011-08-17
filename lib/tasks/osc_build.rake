@@ -20,11 +20,10 @@ require 'rake'
 
 desc "Build package locally"
 task :'osc_build'  do
-  require File.join(File.dirname(__FILE__), "osc_prepare")
-  
-  build_dist = ENV["DIST"] || "openSUSE_Factory"
-
-  obs_project, package_name = osc_prepare
+  config = PackagingConfiguration.instance
+  obs_project = config.obs_project
+  package_name = config.package_name
+  build_dist = config.obs_target
   
   puts "Building package #{package_name} from project #{obs_project}"
 
