@@ -1,6 +1,4 @@
 #--
-# Webyast Webservice framework
-#
 # Copyright (C) 2009, 2010 Novell, Inc. 
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
@@ -24,15 +22,12 @@ task :check_syntax do
 
     # check all *.rb files
     Dir.glob("**/*.rb").each do |file|
-
-	`ruby -c #{file}`
-
-	if $?.exitstatus != 0
-	    puts "ERROR: Syntax error found"
-	    exit 1
-	end
+        system "ruby -c #{file}"
+        if $?.exitstatus != 0
+            puts "ERROR: Syntax error found"
+            exit 1
+        end
     end
 
     puts "* Done"
 end
-
