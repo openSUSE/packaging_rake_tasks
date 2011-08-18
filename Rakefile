@@ -21,7 +21,7 @@ require 'rake/rdoctask'
 
 # load the shared rake files from the package itself
 # skip 'package-local' task, it's redefined here
-require 'lib/tasks/packaging/tasks'
+require 'lib/packaging/tasks'
 Packaging::Tasks.loadTasks(:exclude => ["package-local.rake"])
 
 
