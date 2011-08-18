@@ -56,27 +56,27 @@ def version_update(filein, fileout = nil)
 end
 
 # generate .gemspec file from the template
-file "webyast-rake-tasks.gemspec" => ["webyast-rake-tasks.gemspec.in", "VERSION"] do
-    version_update("webyast-rake-tasks.gemspec.in")
+file "packaging-rake-tasks.gemspec" => ["packaging-rake-tasks.gemspec.in", "VERSION"] do
+    version_update("packaging-rake-tasks.gemspec.in")
 end
 
 
 # generate RPM .spec file from the template
-file "package/rubygem-webyast-rake-tasks.spec" => ["rubygem-webyast-rake-tasks.spec.in", "VERSION"] do
-    version_update("rubygem-webyast-rake-tasks.spec.in", "package/rubygem-webyast-rake-tasks.spec")
+file "package/rubygem-packaging-rake-tasks.spec" => ["rubygem-packaging-rake-tasks.spec.in", "VERSION"] do
+    version_update("rubygem-packaging-rake-tasks.spec.in", "package/rubygem-packaging-rake-tasks.spec")
 end
 
 # build the gem package
 desc 'Build gem package, save RPM sources to package subdirectory'
-task :"package-local" => [:clean,'webyast-rake-tasks.gemspec', 'package/rubygem-webyast-rake-tasks.spec'] do
+task :"package-local" => [:clean,'packaging-rake-tasks.gemspec', 'package/rubygem-packaging-rake-tasks.spec'] do
     version = read_version
-    sh 'gem build webyast-rake-tasks.gemspec' unless uptodate?("webyast-rake-tasks-#{version}.gem", FileList["lib/**/*"])
-    cp "webyast-rake-tasks-#{version}.gem", "package"
+    sh 'gem build packaging-rake-tasks.gemspec' unless uptodate?("packaging-rake-tasks-#{version}.gem", FileList["lib/**/*"])
+    cp "packaging-rake-tasks-#{version}.gem", "package"
 end
 
-desc 'Install webyast-rake-tasks gem package'
+desc 'Install packaging-rake-tasks gem package'
 task :install do
-    sh 'gem install webyast-rake-tasks'
+    sh 'gem install packaging-rake-tasks'
 end
 
 desc 'Run test suite'
