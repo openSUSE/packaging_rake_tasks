@@ -21,8 +21,8 @@ require 'rake/rdoctask'
 
 # load the shared rake files from the package itself
 # skip 'package-local' task, it's redefined here
-require 'lib/tasks/webservice_tasks'
-WebserviceTasks.loadTasks(:exclude => ["package-local.rake"])
+require 'lib/tasks/packaging/tasks'
+Packaging::Tasks.loadTasks(:exclude => ["package-local.rake"])
 
 
 # define clean and clobber tasks
