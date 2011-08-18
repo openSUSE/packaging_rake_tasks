@@ -19,7 +19,7 @@
 
 require 'rake'
 require 'fileutils'
-require "packaging_configuration"
+require "packaging/configuration"
 
 def package_file_name
   config = Packaging::Configuration.instance
