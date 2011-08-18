@@ -125,6 +125,7 @@ def license_report
   report[:seen].each { |m| verbose m }
   verbose "\nCopyright detected as not needed in this files:"
   report[:unneeded].each { |m| verbose m }
+  verbose "\nAll files have proper license reference."
 end
 
 namespace "license" do
