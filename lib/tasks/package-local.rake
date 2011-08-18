@@ -22,17 +22,17 @@ require 'fileutils'
 require "packaging_configuration"
 
 def package_file_name
-  config = PackagingConfiguration.instance
+  config = Packaging::Configuration.instance
   config.package_name+config.version
 end
 
 def package_file_path
-  File.join(Dir.pwd,PackagingConfiguration.instance.package_target_dir,
+  File.join(Dir.pwd,Packaging::Configuration.instance.package_target_dir,
       package_file_name+".tar.bz2")
 end
 
 def remove_package_dir
-  package_target_dir = File.join(Dir.pwd,PackagingConfiguration.instance.package_target_dir,
+  package_target_dir = File.join(Dir.pwd,Packaging::Configuration.instance.package_target_dir,
       package_file_name)
   # remove the old package directory
   FileUtils.rm_rf(package_target_dir) if File.directory?(package_target_dir)
@@ -74,10 +74,10 @@ end
 # create new package task
 def create_package_task
   require 'rake/packagetask'
-  config = PackagingConfiguration.instance
+  config = Packaging::Configuration.instance
   Rake::PackageTask.new(config.package_name, config.version) do |p|
     p.need_tar_bz2 = true
-    p.package_dir = PackagingConfiguration.instance.package_dir
+    p.package_dir = Packaging::Configuration.instance.package_dir
 
     add_git_files p
 
@@ -111,7 +111,7 @@ task :"package-local" do
   create_package_task
 
   # execute the real package task
-  config = PackagingConfiguration.instance
+  config = Packaging::Configuration.instance
   Rake::Task[package_file_path].invoke
 
   # remove the package dir, not needed anymore

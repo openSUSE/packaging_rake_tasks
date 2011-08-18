@@ -20,7 +20,7 @@ require 'rake'
 
 desc "Build package locally"
 task :'osc_build'  do
-  config = PackagingConfiguration.instance
+  config = Packaging::Configuration.instance
   obs_project = config.obs_project
   package_name = config.package_name
   build_dist = config.obs_target

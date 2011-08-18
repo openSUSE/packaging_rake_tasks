@@ -20,5 +20,5 @@ require 'rake'
 
 desc 'Push commits to git and checks if it doesn\'t break anything'
 # just call the checks and then build the package
-task :push => [:check_syntax, :test, :restdoc, :"package-local", :build_test, :git_push]
+task :push => [:check_syntax, :test, :restdoc, :"package-local", :osc_build, :git_push]
 
