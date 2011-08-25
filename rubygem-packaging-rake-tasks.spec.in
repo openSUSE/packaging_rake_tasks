@@ -48,7 +48,6 @@ The new task package includes the tasks git_check and syntax_check.
 %install
 %gem_install %{S:0}
 mkdir -p $RPM_BUILD_ROOT/etc/rpm
-install -m 0644 %SOURCE1 $RPM_BUILD_ROOT/etc/rpm
 
 %clean
 %{__rm} -rf %{buildroot}
