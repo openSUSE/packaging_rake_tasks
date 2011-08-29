@@ -39,7 +39,7 @@ module Packaging
       return @version if @version
       # try find version file
       versions = Dir.glob("**/[vV][eE][rR][sS][iI][oO][nN]") #glob ignore CASEFOLD so use universal regex
-      return @version = `cat #{versions.first}` unless versions.empty?
+      return @version = `cat #{versions.first}`.chomp unless versions.empty?
       raise "cannot find version" #TODO more heuristic
     end
 

@@ -23,7 +23,7 @@ require "packaging/configuration"
 
 def package_file_name
   config = Packaging::Configuration.instance
-  config.package_name+config.version
+  "#{config.package_name}-#{config.version}"
 end
 
 def package_file_path
@@ -107,15 +107,17 @@ task :"package-local" do
   # start from scratch, ensure that the package is fresh
   package_clean
 
-  # create the real package task
-  create_package_task
+  begin
+    # create the real package task
+    create_package_task
 
-  # execute the real package task
-  config = Packaging::Configuration.instance
-  Rake::Task[package_file_path].invoke
-
-  # remove the package dir, not needed anymore
-  remove_package_dir
+    # execute the real package task
+    config = Packaging::Configuration.instance
+    Rake::Task[File.join(config.package_dir,package_file_name+".tar.bz2")].invoke
+  ensure
+    # remove the package dir, not needed anymore
+    remove_package_dir
+  end
 end
 
 # define the same tasks as in Rake::PackageTask
