@@ -27,12 +27,12 @@ def package_file_name
 end
 
 def package_file_path
-  File.join(Dir.pwd,Packaging::Configuration.instance.package_target_dir,
+  File.join(Dir.pwd,Packaging::Configuration.instance.package_dir,
       package_file_name+".tar.bz2")
 end
 
 def remove_package_dir
-  package_target_dir = File.join(Dir.pwd,Packaging::Configuration.instance.package_target_dir,
+  package_target_dir = File.join(Dir.pwd,Packaging::Configuration.instance.package_dir,
       package_file_name)
   # remove the old package directory
   FileUtils.rm_rf(package_target_dir) if File.directory?(package_target_dir)
