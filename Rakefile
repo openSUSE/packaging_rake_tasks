@@ -87,5 +87,6 @@ end
 
 Packaging::Configuration.run do |conf|
   conf.obs_project = "devel:languages:ruby:extensions"
+  conf.package_name = "rubygem-packaging_rake_tasks"
 end
 # vim: ft=ruby
