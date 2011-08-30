@@ -83,4 +83,8 @@ desc 'Run test suite'
 task :test do
     puts 'no test yet'
 end
+
+Packaging::Configuration.run do |conf|
+  conf.obs_project = "devel:languages:ruby:extensions"
+end
 # vim: ft=ruby

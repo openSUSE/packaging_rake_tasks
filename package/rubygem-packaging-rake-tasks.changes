@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 30 07:40:09 UTC 2011 - jreidinger@suse.com
+
+- various fixes, mainly showstoppers
+- 0.1.1
+
+-------------------------------------------------------------------
 Tue Aug 16 11:22:03 UTC 2011 - jreidinger@novell.com
 
 - initial version based on webyast rake tasks 

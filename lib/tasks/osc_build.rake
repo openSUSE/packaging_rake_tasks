@@ -24,6 +24,7 @@ task :'osc_build'  do
   obs_project = config.obs_project
   package_name = config.package_name
   build_dist = config.obs_target
+  raise "Missing information about your Build service project" if !build_dist || !obs_project || !package_name
   
   puts "Building package #{package_name} from project #{obs_project}"
 
@@ -43,7 +44,7 @@ task :'osc_build'  do
     Dir.chdir File.join(Dir.pwd, obs_project, package_name) do
       puts "building package..."
 
-      sh "osc build --no-verify --release=1 --root=/var/tmp/build-root-#{build_dist} --keep-pkgs=#{pkg_dir} --prefer-pkgs=#{pkg_dir} #{build_dist} > /dev/null"
+      sh "osc build --no-verify --release=1 --root=/var/tmp/build-root-#{build_dist} --keep-pkgs=#{pkg_dir} --prefer-pkgs=#{pkg_dir} #{build_dist}"
     end
   ensure
     puts "cleaning"

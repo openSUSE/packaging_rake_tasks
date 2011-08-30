@@ -29,10 +29,6 @@ def make_rdoc_header(input_fname, output_fname)
   end
 end
 
-file "GPLv2.rb" => "GPLv2" do |t|
-  make_rdoc_header t.prerequisites[0], t.name
-end
-
 def verbose(msg)
   # FIXME verbose seems to be on by default, but can use rake -q
   puts msg if RakeFileUtils.verbose
