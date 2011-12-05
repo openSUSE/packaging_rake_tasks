@@ -57,27 +57,27 @@ def version_update(filein, fileout = nil)
 end
 
 # generate .gemspec file from the template
-file "packaging-rake-tasks.gemspec" => ["packaging-rake-tasks.gemspec.in", "VERSION"] do
-    version_update("packaging-rake-tasks.gemspec.in")
+file "packaging_rake_tasks.gemspec" => ["packaging_rake_tasks.gemspec.in", "VERSION"] do
+    version_update("packaging_rake_tasks.gemspec.in")
 end
 
 
 # generate RPM .spec file from the template
-file "package/rubygem-packaging-rake-tasks.spec" => ["rubygem-packaging-rake-tasks.spec.in", "VERSION"] do
-    version_update("rubygem-packaging-rake-tasks.spec.in", "package/rubygem-packaging-rake-tasks.spec")
+file "package/rubygem-packaging_rake_tasks.spec" => ["rubygem-packaging_rake_tasks.spec.in", "VERSION"] do
+    version_update("rubygem-packaging_rake_tasks.spec.in", "package/rubygem-packaging_rake_tasks.spec")
 end
 
 # build the gem package
 desc 'Build gem package, save RPM sources to package subdirectory'
-task :"package-local" => [:clean,'packaging-rake-tasks.gemspec', 'package/rubygem-packaging-rake-tasks.spec'] do
+task :"package-local" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-packaging_rake_tasks.spec'] do
     version = read_version
-    sh 'gem build packaging-rake-tasks.gemspec' unless uptodate?("packaging-rake-tasks-#{version}.gem", FileList["lib/**/*"])
-    cp "packaging-rake-tasks-#{version}.gem", "package"
+    sh 'gem build packaging_rake_tasks.gemspec' unless uptodate?("packaging_rake_tasks-#{version}.gem", FileList["lib/**/*"])
+    cp "packaging_rake_tasks-#{version}.gem", "package"
 end
 
-desc 'Install packaging-rake-tasks gem package'
+desc 'Install packaging_rake_tasks gem package'
 task :install do
-    sh 'gem install packaging-rake-tasks'
+    sh 'gem install packaging_rake_tasks'
 end
 
 desc 'Run test suite'
