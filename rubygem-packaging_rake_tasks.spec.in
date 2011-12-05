@@ -16,14 +16,14 @@
 #
 
 # norootforbuild
-Name:           rubygem-packaging-rake-tasks
+Name:           rubygem-packaging_rake_tasks
 Version:        @VERSION@
 Release:        0
 
 # Nope, doesn't work. Gems are installed below /usr/lib{64}
 # BuildArch:      noarch
 
-%define mod_name packaging-rake-tasks
+%define mod_name packaging_rake_tasks
 #
 Group:          Development/Languages/Ruby
 License:        LGPL v2.1
