@@ -30,7 +30,7 @@ task :'osc_submit'  do
   
   include FileUtils::Verbose
   begin
-    sh "osc", "checkout", obs_project, package_name
+    sh "osc", "-tv", "-A", config.obs_api, "checkout", obs_project, package_name
     
     # clean www dir, and also clean old entries in osc dir to test if package builds after removing some file
     rm_rf Dir.glob("#{obs_project}/#{package_name}/*")
