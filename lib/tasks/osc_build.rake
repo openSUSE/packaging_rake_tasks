@@ -35,7 +35,7 @@ task :'osc_build'  do
   FileUtils.makedirs pkg_dir
   
   begin
-    system("osc checkout '#{obs_project}' #{package_name} > /dev/null")
+    system("osc -A '#{config.obs_api} -tv checkout '#{obs_project}' #{package_name}")
     
     #clean www dir and also clean before copy old entries in osc dir to test if package build after remove some file
     system("rm -vrf '#{obs_project}/#{package_name}/'*")  
