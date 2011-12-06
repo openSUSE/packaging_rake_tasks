@@ -18,13 +18,22 @@
 
 require 'rake'
 
+RPM_SOURCE_DIR = "/usr/src/packages/SOURCES/"
 desc "Build rpms with rpmbuild, no source check"
 task :'buildrpm-local' => :'package-local' do
  Dir.chdir 'package' do
-  specs = Dir.glob('*.spec')
+  #copy sources to proper directory
+  files = Dir["*"].select{ |s| File.file?(s) || File.symlink?(s) }
+  specs = files.select { |f| f =~ /\.spec$/i }
   raise "No spec file found" if specs.empty?  
   spec = specs.first
-  sh "rpmbuild", "-bb", spec
+  files.delete(spec)
+  begin
+    files.each { |f| cp f,RPM_SOURCE_DIR }
+    sh "rpmbuild", "-bb", spec
+  ensure
+    files.each { |f| rm File.join(RPM_SOURCE_DIR,f)}
+  end
  end
 end
 
