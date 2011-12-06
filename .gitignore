@@ -1,0 +1,3 @@
+packaging_rake_tasks-*.gem
+packaging_rake_tasks.gemspec
+package/rubygem-packaging_rake_tasks.spec
