@@ -24,8 +24,20 @@ module Packaging
       @obs_target = "openSUSE_Factory"
     end
 
-    attr_writer :package_name, :package_dir, :version
-    attr_accessor :excluded_files, :obs_project, :obs_api, :obs_target
+    #custom package name, by default directory name
+    attr_writer :package_name
+    #custom directory where is package created, by default 'package'
+    attr_writer :package_dir
+    #manul version specification,  by default look for file version (case insensitive)
+    attr_writer :version
+    # array of files excluded for packaging
+    attr_accessor :excluded_files
+    # project name in OBS
+    attr_accessor :obs_project
+    # path to OBS api, useful if package is build in own instance of build service. By default api.opensuse.org
+    attr_accessor :obs_api
+    # obs build target, by default opensuse factory
+    attr_accessor :obs_target
 
     def package_name
       @package_name ||= Dir.pwd.split("/").last
