@@ -14,6 +14,13 @@ Just add
 line to your Rakefile. All shared tasks will be found and loaded automatically,
 you can verify it with 'rake -T' command.
 
+There is required some basic configuration for your project, especially if you don't use basic targets. For all options see class packaging/configuration.
+Example of configuration ( from this gem itself )
+    Packaging::Configuration.run do |conf|
+    conf.obs_project = "devel:languages:ruby:extensions"
+  conf.package_name = "rubygem-packaging_rake_tasks"
+end
+
 
 Adding a new .rake file
 -----------------------
