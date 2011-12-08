@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec  8 14:30:58 UTC 2011 - jreidinger@suse.com
+
+- fix removing old package tarballs when version increase
+- 0.1.3 
+
+-------------------------------------------------------------------
 Mon Dec  5 14:05:23 UTC 2011 - jreidinger@suse.com
 
 - rename to rubygem-packaging_rake_tasks
