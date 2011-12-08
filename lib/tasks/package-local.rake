@@ -39,9 +39,13 @@ def remove_package_dir
 end
 
 def remove_old_package
-  # remove the old tarball
-  tarball_path = package_file_path
-  FileUtils.rm_rf(tarball_path) if File.exists?(tarball_path)
+  # remove the old tarball - all versions
+  config = Packaging::Configuration.instance
+  package_glob = File.join(Dir.pwd,config.package_dir,"#{config.package_name}-*.tar.bz2")
+  puts package_glob
+  Dir[package_glob].each do |d|
+    rm d
+  end
 end
 
 def package_clean
