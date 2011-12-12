@@ -22,6 +22,7 @@ module Packaging
       @excluded_files = []
       @obs_api = "https://api.opensuse.org/"
       @obs_target = "openSUSE_Factory"
+      @skip_license_check = []
     end
 
     #custom package name, by default directory name
@@ -38,6 +39,8 @@ module Packaging
     attr_accessor :obs_api
     # obs build target, by default opensuse factory
     attr_accessor :obs_target
+    # additional list of regex to skip license check
+    attr_accessor :skip_license_check
 
     def package_name
       @package_name ||= Dir.pwd.split("/").last

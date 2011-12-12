@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 12 12:12:29 UTC 2011 - jreidinger@suse.com
+
+- add configuration to additional files to skip license check
+- 0.1.5 
+
+-------------------------------------------------------------------
 Mon Dec 12 11:44:27 UTC 2011 - jreidinger@suse.com
 
 - fix osc_build 
