@@ -81,16 +81,18 @@ def license_report
       report[:skipped] << "#{fn}: skipped by name match (version system file)"
       next
     end
+    skipped = false
     Packaging::Configuration.instance.skip_license_check.each do |skip|
       if fn =~ skip
-      report[:skipped] << "#{fn}: skipped by name match (configuration regex)"
-      next
+        report[:skipped] << "#{fn}: skipped by name match (configuration regex)"
+        skipped = true
+        break
       end
     end
+    next if skipped
 
     # file content checks
     seen_copyright = false
-    skipped = false
 
     File.open(fn, "r") do |f|
       f.each_line do |l|
