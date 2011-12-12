@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 12 11:44:27 UTC 2011 - jreidinger@suse.com
+
+- fix osc_build 
+- 0.1.4
+
+-------------------------------------------------------------------
 Thu Dec  8 14:30:58 UTC 2011 - jreidinger@suse.com
 
 - fix removing old package tarballs when version increase
