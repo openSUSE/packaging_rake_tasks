@@ -100,6 +100,7 @@ def create_package_task
     p.package_files.exclude('./db/schema.rb')
     # no logs
     p.package_files.exclude('./**/*.log')
+    config.excluded_files.each { |f| p.package_files.exclude f }
   end
 end
 
