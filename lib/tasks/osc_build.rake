@@ -35,11 +35,15 @@ task :'osc_build'  do
   FileUtils.makedirs pkg_dir
   
   begin
-    system("osc -A '#{config.obs_api}' -tv checkout '#{obs_project}' #{package_name}")
+    sh "osc -A '#{config.obs_api}' -tv checkout '#{obs_project}' #{package_name}"
     
     #clean www dir and also clean before copy old entries in osc dir to test if package build after remove some file
-    system("rm -vrf '#{obs_project}/#{package_name}/'*")  
-    system("cp -v package/* '#{obs_project}/#{package_name}'")
+    Dir["#{obs_project}/#{package_name}/*"].each do |d|
+      rm_rf d
+    end  
+    #copy new
+    #FIXME use value from config
+    Dir["package/*"].each { |f| cp f,"#{obs_project}/#{package_name}" }
 
     Dir.chdir File.join(Dir.pwd, obs_project, package_name) do
       puts "building package..."
