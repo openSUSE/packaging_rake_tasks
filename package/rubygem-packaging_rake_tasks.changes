@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Dec 21 14:26:11 UTC 2011 - jreidinger@suse.com
+
+- add correct provisions/obsoletes for old name, fix license string
+- add ability to pack generated file 
+- 0.1.7
+
+-------------------------------------------------------------------
 Wed Dec 14 16:54:01 UTC 2011 - jreidinger@suse.com
 
 - fix excluding packages for user defined one
