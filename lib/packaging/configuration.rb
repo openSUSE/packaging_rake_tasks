@@ -20,6 +20,7 @@ module Packaging
 
     def initialize
       @excluded_files = []
+      @include_files = []
       @obs_api = "https://api.opensuse.org/"
       @obs_target = "openSUSE_Factory"
       @skip_license_check = []
@@ -33,6 +34,11 @@ module Packaging
     attr_writer :version
     # array of files excluded for packaging
     attr_accessor :excluded_files
+    # array of files included for packaging (useful for e.g. for generated file not in git
+    # @example generate css from sass (where sass:update is task to generate it)
+    #   Packaging::Configuration.instance.include_files './**/*.css'
+    #   Rake.application.lookup(:'package-local').prerequisites << "sass:update"
+    attr_accessor :include_files
     # project name in OBS
     attr_accessor :obs_project
     # path to OBS api, useful if package is build in own instance of build service. By default api.opensuse.org

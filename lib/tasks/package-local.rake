@@ -85,6 +85,7 @@ def create_package_task
 
     add_git_files p
 
+    config.include_files.each { |f| p.package_files.include f }
     #don't add IDE files
     p.package_files.exclude('./nbproject')
     #don't add generated documentation. If you want have it in package, generate it fresh
