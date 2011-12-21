@@ -70,6 +70,9 @@ end
 # build the gem package
 desc 'Build gem package, save RPM sources to package subdirectory'
 task :"package-local" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-packaging_rake_tasks.spec'] do
+    Dir["*.gem"].each do |g|
+      rm g
+    end
     version = read_version
     sh 'gem build packaging_rake_tasks.gemspec' unless uptodate?("packaging_rake_tasks-#{version}.gem", FileList["lib/**/*"])
     cp "packaging_rake_tasks-#{version}.gem", "package"
