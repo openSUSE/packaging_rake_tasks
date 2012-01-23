@@ -40,6 +40,7 @@ def license_report
   report = {:missing => [], :seen => [], :unneeded => [], :skipped => []}
   filenames = `git ls-files`.split "\n"
   filenames.each do |fn|
+    next unless File.file? fn #skip all non-regular files e.g. symlinks
     # file name checks
     if fn =~ /\.yml\z/ || fn =~ /\.conf\z/ || fn =~ /\.xml\z/
       report[:skipped] << "#{fn}: skipped by name match (configuration file)"
