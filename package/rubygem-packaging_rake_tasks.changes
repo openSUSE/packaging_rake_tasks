@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 23 17:46:09 UTC 2012 - jreidinger@suse.com
+
+- skip in license check all non-regular files 
+- 0.1.8
+
+-------------------------------------------------------------------
 Wed Dec 21 14:26:11 UTC 2011 - jreidinger@suse.com
 
 - add correct provisions/obsoletes for old name, fix license string
