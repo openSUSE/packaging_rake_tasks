@@ -23,7 +23,7 @@ namespace :check do
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
     if ! ignored.empty?
-      raise "New files missing in git ( if it isfalse alarm, add them to .gitignore ):\n#{ignored}\n\n"
+      raise "New files missing in git (or add them to to .gitignore):\n#{ignored}\n\n"
     end
 
     modified = `git ls-files -m --exclude-standard .`
@@ -31,7 +31,7 @@ namespace :check do
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
     if ! modified.empty?
-      raise "Modified files not commited: #{ignored}"
+      raise "Modified files not commited:\n#{modified}"
     end
   end
 end
