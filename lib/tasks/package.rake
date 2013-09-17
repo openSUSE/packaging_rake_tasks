@@ -18,7 +18,7 @@
 
 require 'rake'
 
-desc 'Build distribution package'
+desc 'Prepare sources for rpm build'
 # just call the checks and then build the package
-task :package => [:check_syntax, :test, :git_check, :"package-local"]
+task :package => ["check:syntax", "check:commited", :test, :tarball]
 
