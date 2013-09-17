@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 
 # gem name and description
 spec.name	= "packaging_rake_tasks"
-spec.version	= File.read(File.expand_path("VERSION"), __FILE__).chomp
+spec.version	= File.read(File.expand_path("../VERSION", __FILE__)).chomp
 spec.summary	= "Rake tasks providing tasks to package project in git and integration with build service"
 spec.license    = "LGPL v2.1"
 
@@ -28,6 +28,7 @@ spec.author	= "Josef Reidinger"
 spec.email	= "jreidinger@suse.cz"
 spec.homepage	= "http://github.org/openSUSE/packaging_tasks"
 
+spec.description = "Rake tasks to allow easy packaging ruby projects in git for Build Service or other packaging service"
 
 # gem content
 spec.files   = Dir["lib/**/*.rb", "lib/tasks/*.rake", "COPYING", "VERSION"]
