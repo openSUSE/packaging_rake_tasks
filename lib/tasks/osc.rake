@@ -29,7 +29,7 @@ namespace :osc do
   end
 
   def build_dist
-    Packaging::Configuration.instance.build_dist
+    Packaging::Configuration.instance.obs_target
   end
 
   def cleaning
