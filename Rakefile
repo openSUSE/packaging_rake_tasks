@@ -23,7 +23,7 @@ require 'rdoc/task'
 # skip 'package-local' task, it's redefined here
 require_relative 'lib/packaging/tasks'
 require_relative 'lib/packaging/configuration'
-Packaging::Tasks.loadTasks(:exclude => ["package-local.rake"])
+Packaging::Tasks.loadTasks(:exclude => ["tarball.rake"])
 
 
 # define clean and clobber tasks
@@ -32,11 +32,6 @@ CLEAN.include("package/*.spec", "package/*.gem")
 CLOBBER.include("*.gem", "*.gemspec")
 task :clobber => :clean
 
-
-def read_version
-    version = `cat VERSION`
-    version.chomp
-end
 
 # generate a file from .in template, replace @VERSION@ string by VERSION file content
 def version_update(filein, fileout = nil)
@@ -50,17 +45,11 @@ def version_update(filein, fileout = nil)
 	fileout = $1
     end
 
-    version = read_version
+    version = File.read("VERSION").chomp
 
-    puts "Updating #{fileout} (#{version})..."
+    puts "Updating #{fileout} (#{version})..." if verbose
     `sed -e 's|@VERSION@|#{version}|' #{filein} > #{fileout}`
 end
-
-# generate .gemspec file from the template
-file "packaging_rake_tasks.gemspec" => ["packaging_rake_tasks.gemspec.in", "VERSION"] do
-    version_update("packaging_rake_tasks.gemspec.in")
-end
-
 
 # generate RPM .spec file from the template
 file "package/rubygem-packaging_rake_tasks.spec" => ["rubygem-packaging_rake_tasks.spec.in", "VERSION"] do
@@ -73,9 +62,9 @@ task :"tarball" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-pack
     Dir["*.gem"].each do |g|
       rm g
     end
-    version = read_version
+    version = File.read("VERSION").chomp
     sh 'gem build packaging_rake_tasks.gemspec' unless uptodate?("packaging_rake_tasks-#{version}.gem", FileList["lib/**/*"])
-    cp "packaging_rake_tasks-#{version}.gem", "package"
+    mv "packaging_rake_tasks-#{version}.gem", "package"
 end
 
 desc 'Install packaging_rake_tasks gem package'
