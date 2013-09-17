@@ -35,6 +35,7 @@ module Packaging
     # array of files excluded for packaging
     attr_accessor :excluded_files
     # array of files included for packaging (useful for e.g. for generated file not in git
+    # @note recommended way is to generate in spec and not before package
     # @example generate css from sass (where sass:update is task to generate it)
     #   Packaging::Configuration.instance.include_files './**/*.css'
     #   Rake.application.lookup(:'package-local').prerequisites << "sass:update"
