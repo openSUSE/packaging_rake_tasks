@@ -9,7 +9,7 @@ Loading shared tasks in other packages
 
 Just add
 
-    require 'tasks/packaging'
+    require "packaging/tasks"
 
 line to your Rakefile. All shared tasks will be found and loaded automatically,
 you can verify it with 'rake -T' command.
