@@ -16,18 +16,18 @@
 
 require 'rake'
 
-desc "Check syntax of all Ruby (*.rb) files"
-task :check_syntax do
-    puts "* Starting syntax check..."
+namespace :check do
+  desc "Check syntax of all Ruby (*.rb) files"
+  task :syntax do
+    puts "* Starting syntax check..." if verbose
 
     # check all *.rb files
     Dir.glob("**/*.rb").each do |file|
-        system "ruby -c #{file}"
-        if $?.exitstatus != 0
-            puts "ERROR: Syntax error found"
-            exit 1
-        end
+      res = `ruby -c #{file}`
+      puts "#{file}: #{res}" if verbose
+      raise "Syntax error found in file '#{file}'" unless $?.exitstatus.zero?
     end
 
-    puts "* Done"
+    puts "* Done" if verbose
+  end
 end
