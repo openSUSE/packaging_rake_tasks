@@ -32,6 +32,7 @@ def package_file_path
 end
 
 def remove_old_packages
+    config = Packaging::Configuration.instance
   # remove the old tarball - all versions
   config = Packaging::Configuration.instance
   package_glob = File.join(Dir.pwd,config.package_dir,"#{config.package_name}-*.tar.bz2")
@@ -76,14 +77,18 @@ end
 # calling 'git ls-files' for every rake call (even 'rake -T')
 desc "Build tarball of git repository"
 task :tarball do
-  # start from scratch, ensure that the package is fresh
-  remove_old_packages
+    # start from scratch, ensure that the package is fresh
+    remove_old_packages
 
-  # create the real package task
-  create_package_task
+    # create the real package task
+    create_package_task
 
-  # execute the real package task
-  config = Packaging::Configuration.instance
-  Rake::Task[File.join(config.package_dir,package_file_name+".tar.bz2")].invoke
+    # execute the real package task
+    config = Packaging::Configuration.instance
+  begin
+    Rake::Task[File.join(config.package_dir, package_file_name+".tar.bz2")].invoke
+  ensure
+    rm_rf File.join(config.package_dir, package_file_name)
+  end
 end
 # vim: ft=ruby
