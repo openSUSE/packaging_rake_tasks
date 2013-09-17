@@ -69,7 +69,7 @@ end
 
 # build the gem package
 desc 'Build gem package, save RPM sources to package subdirectory'
-task :"package-local" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-packaging_rake_tasks.spec'] do
+task :"tarball" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-packaging_rake_tasks.spec'] do
     Dir["*.gem"].each do |g|
       rm g
     end
