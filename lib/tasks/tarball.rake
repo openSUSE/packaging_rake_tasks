@@ -74,7 +74,7 @@ end
 # this is just a dummy package task which creates the real Rake::PackageTask
 # when it is invoked - this avoids removing of the old package and
 # calling 'git ls-files' for every rake call (even 'rake -T')
-desc "Build rpm source files ready to create rpm"
+desc "Build tarball of git repository"
 task :tarball do
   # start from scratch, ensure that the package is fresh
   remove_old_packages
