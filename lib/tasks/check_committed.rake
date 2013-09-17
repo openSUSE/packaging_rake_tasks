@@ -6,7 +6,7 @@ namespace :check do
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
     if ! ignored.empty?
-      raise "New files missing in git and ( if false alarm, add them to .gitignore ): #{ignored}"
+      raise "New files missing in git ( if it isfalse alarm, add them to .gitignore ):\n#{ignored}\n\n"
     end
 
     modified = `git ls-files -m .`
