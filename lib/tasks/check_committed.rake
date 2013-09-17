@@ -18,7 +18,7 @@
 namespace :check do
   desc "check if everything is commited to git repository"
   task :committed do
-    ignored = `git ls-files -o .`
+    ignored = `git ls-files -o --exclude-standard .`
 
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
@@ -26,7 +26,7 @@ namespace :check do
       raise "New files missing in git ( if it isfalse alarm, add them to .gitignore ):\n#{ignored}\n\n"
     end
 
-    modified = `git ls-files -m .`
+    modified = `git ls-files -m --exclude-standard .`
 
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
