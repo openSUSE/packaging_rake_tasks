@@ -76,14 +76,14 @@ end
 # calling 'git ls-files' for every rake call (even 'rake -T')
 desc "Build tarball of git repository"
 task :tarball do
-    # start from scratch, ensure that the package is fresh
-    remove_old_packages
+  # start from scratch, ensure that the package is fresh
+  remove_old_packages
 
-    # create the real package task
-    create_package_task
+  # create the real package task
+  create_package_task
 
-    # execute the real package task
-    config = Packaging::Configuration.instance
+  # execute the real package task
+  config = Packaging::Configuration.instance
   begin
     Rake::Task[File.join(config.package_dir, package_file_name+".tar.bz2")].invoke
   ensure
