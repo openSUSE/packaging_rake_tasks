@@ -68,7 +68,8 @@ namespace :osc do
     end
   end
 
-  def cleanup_version version
+  def version_from_spec spec_glob
+    version = `grep '^Version:' #{spec_glob}`
     version.sub! /^Version:\s*/, ""
     version.sub! /#.*$/, ""
     version.strip!
@@ -120,6 +121,7 @@ namespace :osc do
         # and skip the +++ diff header
         changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`.strip
         if changes.empty?
+          # %h is short hash of a commit
           git_ref = `git log --format=%h -n 1`.chomp
           changes = "Updated to git ref #{git_ref}"
         end
@@ -137,8 +139,8 @@ namespace :osc do
     begin
       checkout
 
-      original_version = cleanup_version(`grep '^Version:' #{osc_checkout_dir}/*.spec`)
-      new_version = cleanup_version(`grep '^Version:' #{package_dir}/*.spec`)
+      original_version = version_from_spec("#{osc_checkout_dir}/*.spec")
+      new_version      = version_from_spec("#{package_dir}/*.spec")
 
       if new_version == original_version
         puts "No version change => no submit request" if verbose
