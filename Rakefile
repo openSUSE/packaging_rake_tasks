@@ -36,12 +36,12 @@ task :clobber => :clean
 # generate a file from .in template, replace @VERSION@ string by VERSION file content
 def version_update(filein, fileout = nil)
   if filein.nil? || filein.empty?
-	  raise "ERROR: empty input or output filename"
+    raise "ERROR: empty input or output filename"
   end
 
   if fileout.nil? || fileout.empty?
-	  filein =~ /(.*)\.in$/
-	  fileout = $1
+    filein =~ /(.*)\.in$/
+    fileout = $1
   end
 
   version = File.read("VERSION").chomp
