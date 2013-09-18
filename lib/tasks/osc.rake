@@ -39,15 +39,15 @@ namespace :osc do
 
   def checkout
     obs_api = Packaging::Configuration.instance.obs_api
-    sh "osc -A '#{obs_api}' -tv checkout '#{obs_project}' #{package_name}"
+    sh "osc -A '#{obs_api}' --traceback --verbose checkout '#{obs_project}' #{package_name}"
   end
 
   def copy_sources
-    #clean project to easily add/remove new/old ones
+    # clean project to easily add/remove new/old ones
     Dir["#{obs_project}/#{package_name}/*"].each do |d|
       rm d
     end
-    #copy new
+    # copy new
     Dir["package/*"].each do |f|
       cp f,"#{obs_project}/#{package_name}"
     end
@@ -67,7 +67,14 @@ namespace :osc do
       Dir.chdir File.join(Dir.pwd, obs_project, package_name) do
         puts "building package..." if verbose
 
-        sh "osc build --no-verify --release=1 --root=/var/tmp/build-root-#{build_dist} --keep-pkgs=#{pkg_dir} --prefer-pkgs=#{pkg_dir} #{build_dist}"
+        command = "osc build"
+        command << " --no-verify" #ignore untrusted BS projects
+        command << " --release=1" #have always same release number
+        # have separated roots per target system, so sharing is more effficient
+        command << " --root=/var/tmp/build-root-#{build_dist}"
+        # store packages for given base system at one place, so it spped up rebuild
+        command << " --keep-pkgs=#{pkg_dir} --prefer-pkgs=#{pkg_dir}"
+        command << " #{build_dist}"
       end
     ensure
       cleaning

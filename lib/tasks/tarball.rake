@@ -32,7 +32,6 @@ def package_file_path
 end
 
 def remove_old_packages
-    config = Packaging::Configuration.instance
   # remove the old tarball - all versions
   config = Packaging::Configuration.instance
   package_glob = File.join(Dir.pwd,config.package_dir,"#{config.package_name}-*.tar.bz2")

@@ -64,8 +64,7 @@ def license_report
       report[:skipped] << "#{fn}: skipped by name match (version system file)"
       next
     end
-    skipped = false
-    next if Packaging::Configuration.instance.skip_license_check.any? do |skip|
+    skipped = Packaging::Configuration.instance.skip_license_check.any? do |skip|
       res = fn =~ skip
       if res
         report[:skipped] << "#{fn}: skipped by name match (configuration regex)"
@@ -106,8 +105,8 @@ def license_report
     raise "\nMissing license:\n#{report[:missing].join("\n")}"
   end
   puts "\nSkipped files:\n#{report[:skipped].join("\n")}" if verbose
-  puts "\nCopyright find in these files:\n#{report[:seen].join("\n")}" if verbose
-  puts "\nCopyright detected as not needed in this files:\n#{report[:unneeded].join("\n")}" if verbose
+  puts "\nCopyright found in these files:\n#{report[:seen].join("\n")}" if verbose
+  puts "\nCopyright detected as not needed in these files:\n#{report[:unneeded].join("\n")}" if verbose
   puts "\nAll files have proper license reference." if verbose
 end
 
