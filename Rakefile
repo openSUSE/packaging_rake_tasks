@@ -73,7 +73,7 @@ end
 
 desc 'Run test suite'
 task :test do
-  puts 'no test yet'
+  puts 'no test yet' if verbose
 end
 
 Packaging::Configuration.run do |conf|

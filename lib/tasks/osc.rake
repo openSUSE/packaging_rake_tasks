@@ -24,8 +24,16 @@ namespace :osc do
     Packaging::Configuration.instance.obs_project
   end
 
+  def obs_sr_project
+    Packaging::Configuration.instance.obs_sr_project
+  end
+
   def package_name
     Packaging::Configuration.instance.package_name
+  end
+
+  def package_dir
+    Packaging::Configuration.instance.package_dir
   end
 
   def build_dist
@@ -37,34 +45,49 @@ namespace :osc do
     puts "cleaning" if verbose
   end
 
+  def obs_api
+    Packaging::Configuration.instance.obs_api
+  end
+
   def checkout
-    obs_api = Packaging::Configuration.instance.obs_api
     sh "osc -A '#{obs_api}' --traceback --verbose checkout '#{obs_project}' #{package_name}"
+  end
+
+  def osc_checkout_dir
+    File.join(Dir.pwd, obs_project, package_name)
   end
 
   def copy_sources
     # clean project to easily add/remove new/old ones
-    Dir["#{obs_project}/#{package_name}/*"].each do |d|
+    Dir["#{osc_checkout_dir}/*"].each do |d|
       rm d
     end
     # copy new
-    Dir["package/*"].each do |f|
+    Dir["#{package_dir}/*"].each do |f|
       cp f,"#{obs_project}/#{package_name}"
     end
   end
 
+  def version_from_spec spec_glob
+    version = `grep '^Version:' #{spec_glob}`
+    version.sub! /^Version:\s*/, ""
+    version.sub! /#.*$/, ""
+    version.strip!
+    version
+  end
+
   desc "Build package locally"
-  task :build => "package" do
+  task :build => ["check:osc", "package"] do
     raise "Missing information about your Build service project" if !build_dist || !obs_project || !package_name
 
-    checkout
-    copy_sources
-    puts "Building package #{package_name} from project #{obs_project}" if verbose
-
-    pkg_dir = File.join("/var/tmp", obs_project, build_dist)
-    mkdir_p pkg_dir
     begin
-      Dir.chdir File.join(Dir.pwd, obs_project, package_name) do
+      checkout
+      copy_sources
+      puts "Building package #{package_name} from project #{obs_project}" if verbose
+
+      pkg_dir = File.join("/var/tmp", obs_project, build_dist)
+      mkdir_p pkg_dir
+      Dir.chdir osc_checkout_dir do
         puts "building package..." if verbose
 
         command = "osc build"
@@ -83,24 +106,56 @@ namespace :osc do
     end
   end
 
-  desc "Submit package to devel project in build service if sources are correct and build"
-  task :submit => "osc:build" do
-    checkout
-    copy_sources
+  desc "Commit package to devel project in build service if sources are correct and build"
+  task :commit => "osc:build" do
     begin
-      Dir.chdir File.join(Dir.pwd, obs_project, package_name) do
+      checkout
+      copy_sources
+
+      Dir.chdir osc_checkout_dir do
         puts "submitting package..." if verbose
         sh "osc addremove"
         # Take new lines from changes and use it as commit message.
         # If a line starts with +, delete + and print it.
         # Except skip the added "-----" header and the timestamp-author after that,
         # and skip the +++ diff header
-        changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`
+        changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`.strip
+        if changes.empty?
+          # %h is short hash of a commit
+          git_ref = `git log --format=%h -n 1`.chomp
+          changes = "Updated to git ref #{git_ref}"
+        end
+
         sh "osc", "commit", "-m", changes
         puts "New package submitted to #{obs_project}" if verbose
       end
     ensure
       cleaning
+    end
+  end
+
+  desc "Create submit request from updated devel project to target project if version change."
+  task :sr => "osc:commit" do
+    begin
+      checkout
+
+      original_version = version_from_spec("#{osc_checkout_dir}/*.spec")
+      new_version      = version_from_spec("#{package_dir}/*.spec")
+
+      if new_version == original_version
+        puts "No version change => no submit request" if verbose
+      else
+        Rake::Task["osc:sr:force"].execute
+      end
+    ensure
+      cleaning
+    end
+  end
+
+  namespace "sr" do
+    desc "Create submit request from devel project to target project without any other packaging or checking"
+    task :force do
+      sh "osc -A '#{obs_api}' sr #{obs_project} #{package_name} #{obs_sr_project}"
     end
   end
 end
