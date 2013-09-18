@@ -32,6 +32,10 @@ namespace :osc do
     Packaging::Configuration.instance.package_name
   end
 
+  def package_dir
+    Packaging::Configuration.instance.package_dir
+  end
+
   def build_dist
     Packaging::Configuration.instance.obs_target
   end
@@ -59,7 +63,7 @@ namespace :osc do
       rm d
     end
     # copy new
-    Dir["package/*"].each do |f|
+    Dir["#{package_dir}/*"].each do |f|
       cp f,"#{obs_project}/#{package_name}"
     end
   end
