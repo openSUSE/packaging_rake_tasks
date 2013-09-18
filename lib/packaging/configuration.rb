@@ -42,6 +42,8 @@ module Packaging
     attr_accessor :include_files
     # project name in OBS
     attr_accessor :obs_project
+    # Project name in BS where submit request should go
+    attr_accessor :obs_sr_project
     # path to OBS api, useful if package is build in own instance of build service. By default api.opensuse.org
     attr_accessor :obs_api
     # obs build target, by default opensuse factory
