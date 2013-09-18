@@ -23,7 +23,7 @@ namespace :check do
 
     `which osc`
     if $?.exitstatus != 0
-      raise "osc client is not installed."
+      raise "osc client is not installed. Please run:\nsudo zypper in osc"
     end
 
     obs_api = Packaging::Configuration.instance.obs_api
