@@ -89,6 +89,10 @@ namespace :osc do
       Dir.chdir File.join(Dir.pwd, obs_project, package_name) do
         puts "submitting package..." if verbose
         sh "osc addremove"
+        # Take new lines from changes and use it as commit message.
+        # If a line starts with +, delete + and print it.
+        # Except skip the added "-----" header and the timestamp-author after that,
+        # and skip the +++ diff header
         changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`
         sh "osc", "commit", "-m", changes
         puts "New package submitted to #{obs_project}" if verbose
