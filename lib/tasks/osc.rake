@@ -54,7 +54,7 @@ namespace :osc do
   end
 
   desc "Build package locally"
-  task :build => "package" do
+  task :build => ["check:osc", "package"] do
     raise "Missing information about your Build service project" if !build_dist || !obs_project || !package_name
 
     checkout
