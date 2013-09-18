@@ -75,6 +75,8 @@ namespace :osc do
         # store packages for given base system at one place, so it spped up rebuild
         command << " --keep-pkgs=#{pkg_dir} --prefer-pkgs=#{pkg_dir}"
         command << " #{build_dist}"
+
+        sh command
       end
     ensure
       cleaning
