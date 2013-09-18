@@ -114,7 +114,12 @@ namespace :osc do
         # If a line starts with +, delete + and print it.
         # Except skip the added "-----" header and the timestamp-author after that,
         # and skip the +++ diff header
-        changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`
+        changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`.strip
+        if changes.empty?
+          git_ref = `git log --format=%h -n 1`.chomp
+          changes = "Updated to git ref #{git_ref}"
+        end
+
         sh "osc", "commit", "-m", changes
         puts "New package submitted to #{obs_project}" if verbose
       end
