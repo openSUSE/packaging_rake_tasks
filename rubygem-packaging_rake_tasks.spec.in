@@ -31,8 +31,6 @@ License:        LGPL-2.1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  rubygems_with_buildroot_patch
 Requires:       rubygems >= 1.2.0
-Provides:       rubygem-packaging-rake-tasks = %{version}
-Obsoletes:      rubygem-packaging-rake-tasks < %{version}
 
 BuildRequires:  rubygem-rake
 Requires:	rubygem-rake	

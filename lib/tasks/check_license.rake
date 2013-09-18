@@ -17,22 +17,7 @@
 #++
 
 require "rake"
-require "English"
-
-def make_rdoc_header(input_fname, output_fname)
-  File.open(input_fname, "r") do |inf|
-    File.open(output_fname, "w") do |out|
-      out.puts "#--"
-      inf.each_line { |l| out.printf "# %s", l }
-      out.puts "#++"
-    end
-  end
-end
-
-def verbose(msg)
-  # FIXME verbose seems to be on by default, but can use rake -q
-  puts msg if RakeFileUtils.verbose
-end
+require "English" #needed for $INPUT_LINE_NUMBER
 
 LIMIT = (ENV["LIMIT"] || 10).to_i
 def license_report
@@ -63,9 +48,6 @@ def license_report
     elsif fn =~ /\.changes\z/
       report[:skipped] << "#{fn}: skipped by name match (changes file)"
       next
-    elsif fn =~ /vendor\/plugins/
-      report[:skipped] << "#{fn}: skipped by name match (polkit policy file)"
-      next
     elsif fn =~ /\.policy\z/
       report[:skipped] << "#{fn}: skipped by name match (polkit policy file)"
       next
@@ -82,13 +64,12 @@ def license_report
       report[:skipped] << "#{fn}: skipped by name match (version system file)"
       next
     end
-    skipped = false
-    Packaging::Configuration.instance.skip_license_check.each do |skip|
-      if fn =~ skip
+    skipped = Packaging::Configuration.instance.skip_license_check.any? do |skip|
+      res = fn =~ skip
+      if res
         report[:skipped] << "#{fn}: skipped by name match (configuration regex)"
-        skipped = true
-        break
       end
+      res
     end
     next if skipped
 
@@ -120,23 +101,20 @@ def license_report
     end
   end
 
-  puts "\nMissing license:" unless report[:missing].empty?
-  report[:missing].each { |m| puts m }
-  exit 1 unless report[:missing].empty?
-  verbose "\nSkipped files:"
-  report[:skipped].each { |m| verbose m }
-  verbose "\nCopyright find in these files:"
-  report[:seen].each { |m| verbose m }
-  verbose "\nCopyright detected as not needed in this files:"
-  report[:unneeded].each { |m| verbose m }
-  verbose "\nAll files have proper license reference."
+  if ! report[:missing].empty?
+    raise "\nMissing license:\n#{report[:missing].join("\n")}"
+  end
+  puts "\nSkipped files:\n#{report[:skipped].join("\n")}" if verbose
+  puts "\nCopyright found in these files:\n#{report[:seen].join("\n")}" if verbose
+  puts "\nCopyright detected as not needed in these files:\n#{report[:unneeded].join("\n")}" if verbose
+  puts "\nAll files have proper license reference." if verbose
 end
 
-namespace "license" do
+namespace "check" do
   desc "Check the copyright+license headers in files"
-  task :report do
+  task :license do
     license_report
   end
 end
 
-task :package => "license:report"
+task :package => "check:license"
