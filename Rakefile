@@ -1,18 +1,18 @@
 #--
 # Webyast Webservice framework
 #
-# Copyright (C) 2009, 2010 Novell, Inc. 
+# Copyright (C) 2009, 2010 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
-# License as published by the Free Software Foundation. 
+# License as published by the Free Software Foundation.
 #
 #   This library is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more 
-# details. 
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
 #
 #   You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software 
+# License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #++
 
@@ -35,20 +35,19 @@ task :clobber => :clean
 
 # generate a file from .in template, replace @VERSION@ string by VERSION file content
 def version_update(filein, fileout = nil)
-    if filein.nil? || filein.empty?
-	puts "ERROR: empty input or output filename"
-	exit 1
-    end
+  if filein.nil? || filein.empty?
+	  raise "ERROR: empty input or output filename"
+  end
 
-    if fileout.nil? || fileout.empty?
-	filein =~ /(.*)\.in$/
-	fileout = $1
-    end
+  if fileout.nil? || fileout.empty?
+	  filein =~ /(.*)\.in$/
+	  fileout = $1
+  end
 
-    version = File.read("VERSION").chomp
+  version = File.read("VERSION").chomp
 
-    puts "Updating #{fileout} (#{version})..." if verbose
-    `sed -e 's|@VERSION@|#{version}|' #{filein} > #{fileout}`
+  puts "Updating #{fileout} (#{version})..." if verbose
+  `sed -e 's|@VERSION@|#{version}|' #{filein} > #{fileout}`
 end
 
 # generate RPM .spec file from the template
@@ -59,22 +58,22 @@ end
 # build the gem package
 desc 'Build gem package, save RPM sources to package subdirectory'
 task :"tarball" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-packaging_rake_tasks.spec'] do
-    Dir["*.gem"].each do |g|
-      rm g
-    end
-    version = File.read("VERSION").chomp
-    sh 'gem build packaging_rake_tasks.gemspec' unless uptodate?("packaging_rake_tasks-#{version}.gem", FileList["lib/**/*"])
-    mv "packaging_rake_tasks-#{version}.gem", "package"
+  Dir["*.gem"].each do |g|
+    rm g
+  end
+  version = File.read("VERSION").chomp
+  sh 'gem build packaging_rake_tasks.gemspec' unless uptodate?("packaging_rake_tasks-#{version}.gem", FileList["lib/**/*"])
+  mv "packaging_rake_tasks-#{version}.gem", "package"
 end
 
 desc 'Install packaging_rake_tasks gem package'
 task :install do
-    sh 'gem install packaging_rake_tasks'
+  sh 'gem install packaging_rake_tasks'
 end
 
 desc 'Run test suite'
 task :test do
-    puts 'no test yet'
+  puts 'no test yet'
 end
 
 Packaging::Configuration.run do |conf|
