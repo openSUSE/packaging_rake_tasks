@@ -84,6 +84,10 @@ task :tarball do
 
   # execute the real package task
   config = Packaging::Configuration.instance
-  Rake::Task[File.join(config.package_dir,package_file_name+".tar.bz2")].invoke
+  begin
+    Rake::Task[File.join(config.package_dir, package_file_name+".tar.bz2")].invoke
+  ensure
+    rm_rf File.join(config.package_dir, package_file_name)
+  end
 end
 # vim: ft=ruby
