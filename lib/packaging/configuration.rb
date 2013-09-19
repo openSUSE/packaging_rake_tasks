@@ -62,7 +62,7 @@ module Packaging
     def version
       return @version if @version
       # try find version file
-      versions = Dir.glob("**/[vV][eE][rR][sS][iI][oO][nN]") #glob ignore CASEFOLD so use universal regex
+      versions = Dir.glob("version", File::FNM_CASEFOLD)
       return @version = `cat #{versions.first}`.chomp unless versions.empty?
       raise "cannot find version" #TODO more heuristic
     end

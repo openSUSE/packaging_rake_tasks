@@ -1,2 +1,4 @@
 /package/*.gem
 /package/*.spec
+/doc
+/.yardoc
