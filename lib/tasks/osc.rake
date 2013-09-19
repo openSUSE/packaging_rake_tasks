@@ -64,7 +64,11 @@ namespace :osc do
     end
     # copy new
     Dir["#{package_dir}/*"].each do |f|
-      cp f,"#{obs_project}/#{package_name}"
+      cp f, osc_checkout_dir
+    end
+
+    Dir.chdir(osc_checkout_dir) do 
+      sh "osc addremove"
     end
   end
 
@@ -114,7 +118,6 @@ namespace :osc do
 
       Dir.chdir osc_checkout_dir do
         puts "submitting package..." if verbose
-        sh "osc addremove"
         # Take new lines from changes and use it as commit message.
         # If a line starts with +, delete + and print it.
         # Except skip the added "-----" header and the timestamp-author after that,
