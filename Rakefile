@@ -66,7 +66,7 @@ task :"tarball" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-pack
 end
 
 desc 'Install packaging_rake_tasks gem package'
-task :install do
+task :install => :tarball do
   sh 'gem install package/packaging_rake_tasks*.gem'
 end
 
