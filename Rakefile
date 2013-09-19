@@ -17,7 +17,6 @@
 #++
 
 require 'rake'
-require 'rdoc/task'
 
 # load the shared rake files from the package itself
 # skip 'package-local' task, it's redefined here
@@ -67,8 +66,8 @@ task :"tarball" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-pack
 end
 
 desc 'Install packaging_rake_tasks gem package'
-task :install do
-  sh 'gem install packaging_rake_tasks'
+task :install => :tarball do
+  sh 'gem install package/packaging_rake_tasks*.gem'
 end
 
 desc 'Run test suite'
