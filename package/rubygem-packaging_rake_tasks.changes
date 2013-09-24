@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Sep 24 13:20:51 UTC 2013 - jreidinger@suse.com
+
+- Big cleaning of tasks, backward incompatible
+- improve documentation
+- 1.0.0
+
+-------------------------------------------------------------------
 Mon Jan 23 17:46:09 UTC 2012 - jreidinger@suse.com
 
 - skip in license check all non-regular files 
