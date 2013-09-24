@@ -38,7 +38,7 @@ module Packaging
     # @note recommended way is to generate in spec and not before package
     # @example generate css from sass (where sass:update is task to generate it)
     #   Packaging::Configuration.instance.include_files './**/*.css'
-    #   Rake.application.lookup(:'package-local').prerequisites << "sass:update"
+    #   Rake::Task(:'package-local').prerequisites << "sass:update"
     attr_accessor :include_files
     # project name in OBS
     attr_accessor :obs_project
