@@ -27,8 +27,7 @@ Packaging::Tasks.loadTasks(:exclude => ["tarball.rake"])
 
 # define clean and clobber tasks
 require 'rake/clean'
-CLEAN.include("package/*.spec", "package/*.gem")
-CLOBBER.include("*.gem", "*.gemspec")
+CLOBBER.include("package/*.spec", "package/*.gem")
 task :clobber => :clean
 
 
