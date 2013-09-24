@@ -2,12 +2,13 @@
 
 This is 'packaging-rake-tasks' Ruby gem package.
 
-This gem contains useful tasks for packaging, checking and building with build service.
+This gem contains useful tasks for packaging, checking and building with [build
+service](http://openbuildservice.org/).
 
 
 # Quick Start
 
-For quick start just add
+For quick start just add to your Rakefile.
 
     require "packaging"
 
@@ -16,7 +17,7 @@ For quick start just add
       conf.package_name = "<package_name>"
     end
 
-to your Rakefile. All shared tasks will be found and loaded automatically,
+All shared tasks will be found and loaded automatically,
 you can verify it with 'rake -T' command.
 
 Checking if defaults fits your needs is recommended and change it if needed.
@@ -88,8 +89,9 @@ and use instead (to exclude package task e.g.)
     Packaging::Tasks.loadTasks(:exclude => ["package.rake"])
 
 
-To remove package that is used also as dependency like license check, you need
-to remove it also from such dependencies
+To remove check that is used also as dependency for e.g. package, it is needed
+to remove it also from prerequisites of task. Example how to remove
+check:license and do not call it when creating package.
 
     require 'packaging/tasks'
     Packaging::Tasks.loadTasks(:exclude => ["check_license.rake"])
