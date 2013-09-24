@@ -31,7 +31,8 @@ module Packaging
         filelist = {}
 
         [:exclude,:include].each do |key|
-          filelist[key] = params[key].map {|ret| Dir["#{File.dirname(__FILE__)}/../tasks/#{file}"] }
+          filelist[key] = params[key].map {|file| Dir["#{File.dirname(__FILE__)}/../tasks/#{file}"] }
+          filelist[key].flatten!
         end
 
         # load an include file only if it not in the exclude list
