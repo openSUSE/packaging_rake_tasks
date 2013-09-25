@@ -2,13 +2,13 @@
 
 This is 'packaging\_rake\_tasks' Ruby gem package.
 
-This gem contains useful tasks for packaging, checking and building with [build
-service](http://openbuildservice.org/).
+This gem contains useful tasks for packaging, checking and building with
+[Open Build Service](http://openbuildservice.org/).
 
 
 # Quick Start
 
-For quick start just add to your Rakefile.
+For a quick start just add to your Rakefile:
 
     require "packaging"
 
@@ -18,38 +18,43 @@ For quick start just add to your Rakefile.
     end
 
 All shared tasks will be found and loaded automatically,
-you can verify it with 'rake -T' command.
+you can verify it with `rake -T` command.
 
-Checking if defaults fits your needs is recommended and change it if needed.
+It is recommended to check whether the defaults fit your needs
+and change the configuration if needed.
 
 # Documentation
 ## Online Fresh Generated
 Is available at
 [rubydoc.info](http://rubydoc.info/github/openSUSE/packaging_tasks/master/frames)
 
-## Explanation of provided tasks
+## Explanation of Provided Tasks
 
 ### check:commited
-Checks if all changes to git repository is commited. It doesn't check if changes
-are send to remote git repository. It main intention is to ensure, that all
-changes are tracked before making package.
+Checks if all changes to the local git repository are commited.
+It doesn't check if changes
+are sent to a remote git repository. Its main intention is to ensure that all
+changes are tracked before making a package.
 
 ### check:license
-Checks if all non-trivial file have license header. It is needed because there
-is countries where implicitelly everything is private unless stated otherwise
-and also to help license digger check licenses. Check recognize license or
-prefix `Source:` if file is copyied from different source.
+Checks if all non-trivial files have a license header.
+It is needed because there are
+countries where implicitely everything is private unless stated otherwise
+and also to help License Digger check licenses.
+The check looks for a "copyright" notice or a prefix `Source:`
+if the file is copied from a different source.
 To skip some files use `skip_license_check` configuration option.
 
 ### check:osc
-Checks if osc is installed and configured to allow sending to OBS project. Its
+Checks if [`osc`](http://en.opensuse.org/openSUSE:OSC) is installed
+and configured to allow sending to an OBS project. Its
 goal is to make start of developing easier with helpful error messages.
 
 ### check:syntax
 Checks syntax of all ruby files that can be found.
 
 ### osc:build
-Runs local build using osc command. Use separate temporary files for each
+Runs local build using `osc` command. It uses separate build roots for each
 basesystem for more efficient caching.
 
 ### osc:commit
@@ -57,55 +62,58 @@ Commit recent version to OBS devel project. It runs all checks and create recent
 package.
 
 ### osc:sr
-Create submit request to target OBS project specified with `obs_sr_project`
-configuration option. Task include running `osc:commit`.
+Creates a submit request to the target OBS project
+(specified with `obs_sr_project` configuration option).
+That includes running `osc:commit`.
 
 ### osc:sr:force
-Create submit request from devel project to target OBS project. Do not runs
-anything else then `osc sr <params>`.
+Creates a submit request from the development project to the target OBS
+project.
+It doesn't run anything else than `osc sr <params>`.
 
 ### package
-Create source files for build. It includes running all checks, tests and
-creating tarball.
+Creates source files for building. It includes running all checks, tests and
+creating a tarball.
 
 ### tarball
-Creates tarball of git repository without development files.
+Creates a tarball of the local git repository without development files.
 
 # How-To
 
-## How to remove task
+## How to Remove a Task
 
-If there is task that doesn't make sense for you, then you can exclude it from
+If there is a task that doesn't make sense for you then you can exclude it from
 loading.
 
-To do it, replace line with
+For example, to exclude the `package` task, replace the `require`
 
     require "packaging"
 
+with
 
-and use instead (to exclude package task e.g.)
-
-    require 'packaging/tasks'
+    require "packaging/tasks"
     Packaging::Tasks.loadTasks(:exclude => ["package.rake"])
-
 
 To remove check that is used also as dependency for e.g. package, it is needed
 to remove it also from prerequisites of task. Example how to remove
 check:license and do not call it when creating package.
 
-    require 'packaging/tasks'
+    require "packaging/tasks"
     Packaging::Tasks.loadTasks(:exclude => ["check_license.rake"])
     Rake::Task["package"].prerequisites.delete("check:license")
 
 
-## How to Add New Check For Package
-When project require specific check before making package, then implement it and
-it to package as dependency:
+## How to Add a New Check for Package
+When a project requires a specific check before making a package
+then implement it and add it to `package` as dependency:
 
-    task :example do
-      ...
+    namespace :check do
+      desc "Check for Y3K compliance"
+      task :y3k do
+         ...
+      end
     end
-    task :package => :example
+    task :package => "check:y3k"
 
 # Contributing
 
@@ -116,4 +124,5 @@ it to package as dependency:
 5. Create new Pull Request
 
 # License
-Package is licensed by LGPL-2.1.
+This package is licensed under
+[LGPL-2.1](http://www.gnu.org/licenses/lgpl-2.1.html).
