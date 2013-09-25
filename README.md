@@ -58,8 +58,7 @@ Runs local build using `osc` command. It uses separate build roots for each
 basesystem for more efficient caching.
 
 ### osc:commit
-Commit recent version to OBS devel project. It runs all checks and create recent
-package.
+Commit current state of git tree to OBS devel project. It runs all checks and create package.
 
 ### osc:sr
 Creates a submit request to the target OBS project
