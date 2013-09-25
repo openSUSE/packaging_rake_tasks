@@ -1,5 +1,5 @@
 
-This is 'packaging-rake-tasks' Ruby gem package based on webyast rake task.
+This is 'packaging\_rake\_tasks' Ruby gem package based on webyast rake task.
 
 This gem contains few useful tasks for packaging and building with build service.
 
