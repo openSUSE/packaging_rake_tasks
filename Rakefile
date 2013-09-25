@@ -22,7 +22,7 @@ require 'rake'
 # skip 'package-local' task, it's redefined here
 require_relative 'lib/packaging/tasks'
 require_relative 'lib/packaging/configuration'
-Packaging::Tasks.loadTasks(:exclude => ["tarball.rake"])
+Packaging::Tasks.load_tasks(:exclude => ["tarball.rake"])
 
 
 # define clean and clobber tasks

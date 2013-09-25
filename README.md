@@ -92,14 +92,14 @@ For example, to exclude the `package` task, replace the `require`
 with
 
     require "packaging/tasks"
-    Packaging::Tasks.loadTasks(:exclude => ["package.rake"])
+    Packaging::Tasks.load_tasks(:exclude => ["package.rake"])
 
 To remove check that is used also as dependency for e.g. package, it is needed
 to remove it also from prerequisites of task. Example how to remove
 check:license and do not call it when creating package.
 
     require "packaging/tasks"
-    Packaging::Tasks.loadTasks(:exclude => ["check_license.rake"])
+    Packaging::Tasks.load_tasks(:exclude => ["check_license.rake"])
     Rake::Task["package"].prerequisites.delete("check:license")
 
 

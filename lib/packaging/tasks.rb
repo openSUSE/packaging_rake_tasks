@@ -22,7 +22,7 @@ module Packaging
 
     class << self
       # load webservice *.rake files, exclude/include list can be specified
-      def loadTasks(params = {})
+      def load_tasks(params = {})
         # a flag - load the tasks just once, multiple loading
         # leads to multiple invocation of the same task
         return if @tasks_loaded
