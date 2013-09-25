@@ -19,7 +19,7 @@ module Packaging
     include Singleton
 
     def initialize
-      @excluded_files = []
+      @exclude_files = []
       @include_files = []
       @obs_api = "https://api.opensuse.org/"
       @obs_target = "openSUSE_Factory"
@@ -33,7 +33,7 @@ module Packaging
     #manul version specification,  by default look for file version (case insensitive)
     attr_writer :version
     # array of files excluded for packaging
-    attr_accessor :excluded_files
+    attr_accessor :exclude_files
     # array of files included for packaging (useful for e.g. for generated file not in git
     # @note recommended way is to generate in spec and not before package
     # @example generate css from sass (where sass:update is task to generate it)

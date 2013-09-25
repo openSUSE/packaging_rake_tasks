@@ -67,7 +67,7 @@ def create_package_task
     #ignore itself
     p.package_files.exclude "./#{p.package_dir}"
 
-    config.excluded_files.each { |f| p.package_files.exclude f }
+    config.exclude_files.each { |f| p.package_files.exclude f }
   end
 end
 
