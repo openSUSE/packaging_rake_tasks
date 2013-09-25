@@ -1,6 +1,6 @@
 # Packaging Rake Tasks
 
-This is 'packaging-rake-tasks' Ruby gem package.
+This is 'packaging\_rake\_tasks' Ruby gem package.
 
 This gem contains useful tasks for packaging, checking and building with [build
 service](http://openbuildservice.org/).
