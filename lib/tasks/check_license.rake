@@ -51,7 +51,8 @@ def license_report
     elsif fn =~ /\.policy\z/
       report[:skipped] << "#{fn}: skipped by name match (polkit policy file)"
       next
-    elsif fn =~ /\.png\z/ || fn =~ /\.odg\z/ || fn =~ /\.gif\z/ || fn =~ /\.swf\z/ || fn =~ /\.ico\z/
+    elsif fn =~ /\.png\z/ || fn =~ /\.odg\z/ || fn =~ /\.gif\z/ || fn =~
+        /\.swf\z/ || fn =~ /\.ico\z/ || fn =~ /\.tiff?\z/
       report[:skipped] << "#{fn}: skipped by name match (binary file)"
       next
     elsif fn =~ /\.po\z/ || fn =~ /\.mo\z/
