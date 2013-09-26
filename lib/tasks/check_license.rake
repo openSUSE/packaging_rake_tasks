@@ -78,21 +78,28 @@ def license_report
     seen_copyright = false
 
     puts "Checking file: #{fn}" if verbose == true
-    File.open(fn, "r") do |f|
-      f.each_line do |l|
-        if $INPUT_LINE_NUMBER < 3 && l =~ /Source:/
-          skipped = true
-          report[:skipped] << "#{fn}: skipped (external or generated source)"
-          break
-        end
-        break if $INPUT_LINE_NUMBER > LIMIT
-        if l =~ /copyright/i
-          seen_copyright = true
-          break
+    begin
+      File.open(fn, "r") do |f|
+        f.each_line do |l|
+          if $INPUT_LINE_NUMBER < 3 && l =~ /Source:/
+            skipped = true
+            report[:skipped] << "#{fn}: skipped (external or generated source)"
+            break
+          end
+          break if $INPUT_LINE_NUMBER > LIMIT
+          if l =~ /copyright/i
+            seen_copyright = true
+            break
+          end
         end
       end
+      next if skipped
+    rescue ArgumentError => e
+      if e.to_s =~ /invalid byte sequence/
+        raise e, e.message + "; offending file: #{fn}"
+      end
+      raise
     end
-    next if skipped
 
     if seen_copyright
       report[:seen] << "#{fn}:#{$INPUT_LINE_NUMBER}: copyright seen"
