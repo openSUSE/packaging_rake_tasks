@@ -77,6 +77,7 @@ def license_report
     # file content checks
     seen_copyright = false
 
+    puts "Checking file: #{fn}" if verbose == true
     File.open(fn, "r") do |f|
       f.each_line do |l|
         if $INPUT_LINE_NUMBER < 3 && l =~ /Source:/
