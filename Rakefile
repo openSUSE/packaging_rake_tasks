@@ -22,13 +22,12 @@ require 'rake'
 # skip 'package-local' task, it's redefined here
 require_relative 'lib/packaging/tasks'
 require_relative 'lib/packaging/configuration'
-Packaging::Tasks.loadTasks(:exclude => ["tarball.rake"])
+Packaging::Tasks.load_tasks(:exclude => ["tarball.rake"])
 
 
 # define clean and clobber tasks
 require 'rake/clean'
-CLEAN.include("package/*.spec", "package/*.gem")
-CLOBBER.include("*.gem", "*.gemspec")
+CLOBBER.include("package/*.spec", "package/*.gem")
 task :clobber => :clean
 
 
@@ -75,7 +74,7 @@ task :test do
   puts 'no test yet' if verbose
 end
 
-Packaging::Configuration.run do |conf|
+Packaging.configuration do |conf|
   conf.obs_project = "devel:languages:ruby:extensions"
   conf.package_name = "rubygem-packaging_rake_tasks"
 end
