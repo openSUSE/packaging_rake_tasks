@@ -15,11 +15,16 @@
 #++
 
 module Packaging
+
+  def self.configuration &block
+    yield Configuration.instance
+  end
+
   class Configuration
     include Singleton
 
     def initialize
-      @excluded_files = []
+      @exclude_files = []
       @include_files = []
       @obs_api = "https://api.opensuse.org/"
       @obs_target = "openSUSE_Factory"
@@ -33,12 +38,12 @@ module Packaging
     #manul version specification,  by default look for file version (case insensitive)
     attr_writer :version
     # array of files excluded for packaging
-    attr_accessor :excluded_files
+    attr_accessor :exclude_files
     # array of files included for packaging (useful for e.g. for generated file not in git
     # @note recommended way is to generate in spec and not before package
     # @example generate css from sass (where sass:update is task to generate it)
     #   Packaging::Configuration.instance.include_files './**/*.css'
-    #   Rake.application.lookup(:'package-local').prerequisites << "sass:update"
+    #   Rake::Task(:'package-local').prerequisites << "sass:update"
     attr_accessor :include_files
     # project name in OBS
     attr_accessor :obs_project
@@ -65,10 +70,6 @@ module Packaging
       versions = Dir.glob("version", File::FNM_CASEFOLD)
       return @version = `cat #{versions.first}`.chomp unless versions.empty?
       raise "cannot find version" #TODO more heuristic
-    end
-
-    def self.run
-      yield instance
     end
   end
 end

@@ -51,7 +51,8 @@ def license_report
     elsif fn =~ /\.policy\z/
       report[:skipped] << "#{fn}: skipped by name match (polkit policy file)"
       next
-    elsif fn =~ /\.png\z/ || fn =~ /\.odg\z/ || fn =~ /\.gif\z/ || fn =~ /\.swf\z/ || fn =~ /\.ico\z/
+    elsif fn =~ /\.png\z/ || fn =~ /\.odg\z/ || fn =~ /\.gif\z/ || fn =~
+        /\.swf\z/ || fn =~ /\.ico\z/ || fn =~ /\.tiff?\z/
       report[:skipped] << "#{fn}: skipped by name match (binary file)"
       next
     elsif fn =~ /\.po\z/ || fn =~ /\.mo\z/
@@ -76,21 +77,29 @@ def license_report
     # file content checks
     seen_copyright = false
 
-    File.open(fn, "r") do |f|
-      f.each_line do |l|
-        if $INPUT_LINE_NUMBER < 3 && l =~ /Source:/
-          skipped = true
-          report[:skipped] << "#{fn}: skipped (external or generated source)"
-          break
-        end
-        break if $INPUT_LINE_NUMBER > LIMIT
-        if l =~ /copyright/i
-          seen_copyright = true
-          break
+    puts "Checking file: #{fn}" if verbose == true
+    begin
+      File.open(fn, "r") do |f|
+        f.each_line do |l|
+          if $INPUT_LINE_NUMBER < 3 && l =~ /Source:/
+            skipped = true
+            report[:skipped] << "#{fn}: skipped (external or generated source)"
+            break
+          end
+          break if $INPUT_LINE_NUMBER > LIMIT
+          if l =~ /copyright/i
+            seen_copyright = true
+            break
+          end
         end
       end
+      next if skipped
+    rescue ArgumentError => e
+      if e.to_s =~ /invalid byte sequence/
+        raise e, e.message + "; offending file: #{fn}"
+      end
+      raise
     end
-    next if skipped
 
     if seen_copyright
       report[:seen] << "#{fn}:#{$INPUT_LINE_NUMBER}: copyright seen"

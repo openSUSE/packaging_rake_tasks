@@ -18,29 +18,30 @@ require 'rake'
 
 
 module Packaging
-  class Tasks
+  module Tasks
 
-    # a flag - load the tasks just once, multiple loading
-    # leads to multiple invocation of the same task
-    @@tasks_loaded = false
+    class << self
+      # load webservice *.rake files, exclude/include list can be specified
+      def load_tasks(params = {})
+        # a flag - load the tasks just once, multiple loading
+        # leads to multiple invocation of the same task
+        return if @tasks_loaded
+        params[:exclude] ||= []
+        params[:include] ||= ["*.rake"]
+        filelist = {}
 
-    # load webservice *.rake files, exclude/include list can be specified
-    def self.loadTasks(params = {:include => ["*.rake"], :exclude => []})
-      return if @@tasks_loaded
-      params[:exclude] ||= []
-      params[:include] ||= ["*.rake"]
-      filelist = {}
+        [:exclude,:include].each do |key|
+          filelist[key] = params[key].map {|file| Dir["#{File.dirname(__FILE__)}/../tasks/#{file}"] }
+          filelist[key].flatten!
+        end
 
-      [:exclude,:include].each do |key|
-        filelist[key] = params[key].reduce([]) {|ret,file| ret += Dir["#{File.dirname(__FILE__)}/../tasks/#{file}"] }
+        # load an include file only if it not in the exclude list
+        filelist[:include].each do |ext|
+          load ext unless filelist[:exclude].include?(ext)
+        end
+
+        @tasks_loaded = true
       end
-
-      # load an include file only if it not in the exclude list
-      filelist[:include].each do |ext|
-        load ext unless filelist[:exclude].include?(ext)
-      end
-
-      @@tasks_loaded = true
     end
   end
 end

@@ -19,5 +19,5 @@
 
 # load all webservice *.rake files
 require 'packaging/tasks'
-Packaging::Tasks.loadTasks
+Packaging::Tasks.load_tasks
 
