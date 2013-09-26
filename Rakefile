@@ -74,7 +74,7 @@ task :test do
   puts 'no test yet' if verbose
 end
 
-Packaging::Configuration.run do |conf|
+Packaging.configuration do |conf|
   conf.obs_project = "devel:languages:ruby:extensions"
   conf.package_name = "rubygem-packaging_rake_tasks"
 end

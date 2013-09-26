@@ -12,7 +12,7 @@ For a quick start just add to your Rakefile:
 
     require "packaging"
 
-    Packaging::Configuration.run do |conf|
+    Packaging.configuration do |conf|
       conf.obs_project = "<obs_devel_project>"
       conf.package_name = "<package_name>"
     end

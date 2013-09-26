@@ -15,6 +15,11 @@
 #++
 
 module Packaging
+
+  def self.configuration &block
+    yield Configuration.instance
+  end
+
   class Configuration
     include Singleton
 
@@ -65,10 +70,6 @@ module Packaging
       versions = Dir.glob("version", File::FNM_CASEFOLD)
       return @version = `cat #{versions.first}`.chomp unless versions.empty?
       raise "cannot find version" #TODO more heuristic
-    end
-
-    def self.run
-      yield instance
     end
   end
 end
