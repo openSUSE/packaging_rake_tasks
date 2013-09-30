@@ -68,7 +68,7 @@ module Packaging
       return @version if @version
       # try find version file
       versions = Dir.glob("version", File::FNM_CASEFOLD)
-      return @version = `cat #{versions.first}`.chomp unless versions.empty?
+      return @version = File.read(versions.first).strip unless versions.empty?
       raise "cannot find version" #TODO more heuristic
     end
   end
