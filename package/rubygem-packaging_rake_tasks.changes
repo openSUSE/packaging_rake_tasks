@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 30 13:31:53 UTC 2013 - jreidinger@suse.com
+
+- fix reading version file if it contain more empty lines
+- 1.0.1
+
+-------------------------------------------------------------------
 Tue Sep 24 13:20:51 UTC 2013 - jreidinger@suse.com
 
 - Big cleaning of tasks, backward incompatible
