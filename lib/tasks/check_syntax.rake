@@ -23,6 +23,9 @@ namespace :check do
 
     # check all *.rb files
     Dir.glob("**/*.rb").each do |file|
+      # skip rspec files as it is not pure ruby scripts and ruby -c failed
+      next unless File.readlines(file).grep(/^#!.*rspec/).empty?
+
       res = `ruby -c #{file}`
       puts "#{file}: #{res}" if verbose
       raise "Syntax error found in file '#{file}'" unless $?.exitstatus.zero?
