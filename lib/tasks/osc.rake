@@ -100,7 +100,7 @@ namespace :osc do
         # have separated roots per target system, so sharing is more effficient
         command << " --root=/var/tmp/build-root-#{build_dist}"
         # store packages for given base system at one place, so it spped up rebuild
-        command << " --keep-pkgs=#{pkg_dir} --prefer-pkgs=#{pkg_dir}"
+        command << " --keep-pkgs=#{pkg_dir}"
         command << " #{build_dist}"
 
         sh command
