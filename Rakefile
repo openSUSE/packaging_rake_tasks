@@ -56,7 +56,7 @@ end
 # build the gem package
 desc 'Build gem package, save RPM sources to package subdirectory'
 task :"tarball" => [:clean,'packaging_rake_tasks.gemspec', 'package/rubygem-packaging_rake_tasks.spec'] do
-  Dir["*.gem"].each do |g|
+  Dir["**/*.gem"].each do |g|
     rm g
   end
   version = File.read("VERSION").chomp
