@@ -47,7 +47,6 @@ The new task package includes the tasks git_check and syntax_check.
 %build
 %install
 %gem_install %{S:0}
-mkdir -p $RPM_BUILD_ROOT/etc/rpm
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -58,5 +57,6 @@ mkdir -p $RPM_BUILD_ROOT/etc/rpm
 %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_name}-%{version}/
 %{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_name}-%{version}.gemspec
 %doc %{_libdir}/ruby/gems/%{rb_ver}/doc/%{mod_name}-%{version}/
+%doc %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_name}-%{version}/COPYING
 
 %changelog
