@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct  9 07:26:41 UTC 2013 - jreidinger@suse.com
+
+- Read all ruby files in UTF-8
+- Improve reporting of different enconding
+- 1.0.4
+
+-------------------------------------------------------------------
 Tue Oct  8 07:47:02 UTC 2013 - jreidinger@suse.com
 
 - Do not use locally build rpms to get persistent results
