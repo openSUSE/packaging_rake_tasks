@@ -24,7 +24,14 @@ namespace :check do
     # check all *.rb files
     Dir.glob("**/*.rb").each do |file|
       # skip rspec files as it is not pure ruby scripts and ruby -c failed
-      next unless File.readlines(file).grep(/^#!.*rspec/).empty?
+      begin
+        next unless File.readlines(file, $\, :encoding => "UTF-8").grep(/^#!.*rspec/).empty?
+      rescue ArgumentError => e
+        if e.to_s =~ /invalid byte sequence/
+          raise e, e.message + "; offending file: #{file}"
+        end
+        raise
+      end
 
       res = `ruby -c #{file}`
       puts "#{file}: #{res}" if verbose
