@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 15 09:26:33 UTC 2013 - mvidner@suse.com
+
+- Optional argument osc_options for `rake osc:build`
+- 1.0.5
+
+-------------------------------------------------------------------
 Wed Oct  9 07:26:41 UTC 2013 - jreidinger@suse.com
 
 - Read all ruby files in UTF-8
