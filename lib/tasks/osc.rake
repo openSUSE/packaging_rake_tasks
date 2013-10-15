@@ -81,7 +81,8 @@ namespace :osc do
   end
 
   desc "Build package locally"
-  task :build => ["check:osc", "package"] do
+  task :build, [:osc_options] => ["check:osc", "package"] do |t, args|
+    args.with_defaults = { :osc_options => "" }
     raise "Missing information about your Build service project" if !build_dist || !obs_project || !package_name
 
     begin
@@ -101,6 +102,7 @@ namespace :osc do
         command << " --root=/var/tmp/build-root-#{build_dist}"
         # store packages for given base system at one place, so it spped up rebuild
         command << " --keep-pkgs=#{pkg_dir}"
+        command << " #{args[:osc_options]}"
         command << " #{build_dist}"
 
         sh command

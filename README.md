@@ -57,6 +57,9 @@ Checks syntax of all ruby files that can be found.
 Runs local build using `osc` command. It uses separate build roots for each
 basesystem for more efficient caching.
 
+An optional argument is passed as options to `osc` and can be used to prefer
+local packages: `rake "osc:build[-p /var/tmp/YaST:Head/openSUSE_Factory]"`
+
 ### osc:commit
 Commit current state of git tree to OBS devel project. It runs all checks and create package.
 
