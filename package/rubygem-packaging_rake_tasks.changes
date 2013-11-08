@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov  8 10:34:37 UTC 2013 - jreidinger@suse.com
+
+- Do not check documentation files for license
+- 1.0.6
+
+-------------------------------------------------------------------
 Tue Oct 15 09:26:33 UTC 2013 - mvidner@suse.com
 
 - Optional argument osc_options for `rake osc:build`
