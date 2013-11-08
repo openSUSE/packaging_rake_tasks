@@ -30,7 +30,7 @@ def license_report
     if fn =~ /\.yml\z/ || fn =~ /\.conf\z/ || fn =~ /\.xml\z/
       report[:skipped] << "#{fn}: skipped by name match (configuration file)"
       next
-    elsif fn =~ /README/ 
+    elsif fn =~ /README/
       report[:skipped] << "#{fn}: skipped by name match (README file)"
       next
     elsif fn =~ /^db\//
@@ -41,9 +41,6 @@ def license_report
       next
     elsif fn =~ /COPYING/
       report[:skipped] << "#{fn}: skipped by name match (already contain license)"
-      next
-    elsif fn =~ /\/rrdtool.*\.txt/
-      report[:skipped] << "#{fn}: skipped by name match (rrdtool output is not licensed)"
       next
     elsif fn =~ /\.changes\z/
       report[:skipped] << "#{fn}: skipped by name match (changes file)"
@@ -63,6 +60,9 @@ def license_report
       next
     elsif fn =~ /\.gitignore\z/
       report[:skipped] << "#{fn}: skipped by name match (version system file)"
+      next
+    elsif fn =~ /\.md\z/ || fn =~ /\.doc\z/ || fn =~ /\.txt\z/
+      report[:skipped] << "#{fn}: skipped by name match (documentation file)"
       next
     end
     skipped = Packaging::Configuration.instance.skip_license_check.any? do |skip|
