@@ -17,6 +17,7 @@
 #++
 
 require 'rake'
+require "tempfile"
 
 namespace :osc do
 
@@ -144,7 +145,10 @@ namespace :osc do
     begin
       checkout
 
-      original_version = version_from_spec("#{osc_checkout_dir}/*.spec")
+      file = TempFile.new('yast-rake')
+      file.close
+      sh "osc cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
+      original_version = version_from_spec(file.path)
       new_version      = version_from_spec("#{package_dir}/*.spec")
 
       if new_version == original_version
@@ -154,6 +158,7 @@ namespace :osc do
       end
     ensure
       cleaning
+      file.unlink if file
     end
   end
 
