@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Nov 13 16:09:42 UTC 2013 - jreidinger@suse.com
+
+- Always pass message to osc sr otherwise it stuck in editor
+- 1.0.7
+
+-------------------------------------------------------------------
 Fri Nov  8 10:34:37 UTC 2013 - jreidinger@suse.com
 
 - Do not check documentation files for license
