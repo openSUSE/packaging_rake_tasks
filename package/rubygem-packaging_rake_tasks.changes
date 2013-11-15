@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 15 07:59:13 UTC 2013 - jreidinger@suse.com
+
+- fix typo
+- 1.0.10
+
+-------------------------------------------------------------------
 Fri Nov 15 07:26:13 UTC 2013 - jreidinger@suse.com
 
 - specify to have osc sr always non-interactive
