@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 15 09:56:01 UTC 2013 - jreidinger@suse.com
+
+- workaround osc interactive superseed (gh#opensuse/osc#58)
+- 1.0.11
+
+-------------------------------------------------------------------
 Fri Nov 15 07:59:13 UTC 2013 - jreidinger@suse.com
 
 - fix typo
