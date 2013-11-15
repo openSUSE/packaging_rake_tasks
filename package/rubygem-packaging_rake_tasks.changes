@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 15 07:26:13 UTC 2013 - jreidinger@suse.com
+
+- specify to have osc sr always non-interactive
+- 1.0.9
+
+-------------------------------------------------------------------
 Wed Nov 13 16:48:31 UTC 2013 - jreidinger@suse.com
 
 - Fix osc sr to use proper version change detection
