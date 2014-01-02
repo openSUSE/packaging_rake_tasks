@@ -75,8 +75,8 @@ namespace :osc do
 
   def version_from_spec spec_glob
     version = `grep '^Version:' #{spec_glob}`
-    version.sub! /^Version:\s*/, ""
-    version.sub! /#.*$/, ""
+    version.sub!(/^Version:\s*/, "")
+    version.sub!(/#.*$/, "")
     version.strip!
     version
   end
