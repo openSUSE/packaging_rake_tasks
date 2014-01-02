@@ -25,7 +25,7 @@ module Packaging
       def load_tasks(params = {})
         # a flag - load the tasks just once, multiple loading
         # leads to multiple invocation of the same task
-        return if @tasks_loaded
+        return if defined? @tasks_loaded
         params[:exclude] ||= []
         params[:include] ||= ["*.rake"]
         filelist = {}
