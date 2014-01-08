@@ -149,7 +149,7 @@ namespace :osc do
       file.close
       sh "osc cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
       original_version = version_from_spec(file.path)
-      new_version      = version_from_spec("#{package_dir}/*.spec")
+      new_version      = version_from_spec("#{package_dir}/#{package_name}.spec")
 
       if new_version == original_version
         puts "No version change => no submit request" if verbose
