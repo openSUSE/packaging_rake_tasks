@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan  8 12:36:30 UTC 2014 - jreidinger@suse.com
+
+- Fix submit request version comparison if there is more then one
+  spec file
+- 1.0.12
+
+-------------------------------------------------------------------
 Fri Nov 15 09:56:01 UTC 2013 - jreidinger@suse.com
 
 - workaround osc interactive superseed (gh#opensuse/osc#58)
