@@ -35,7 +35,7 @@ Requires:       rubygems >= 1.2.0
 BuildRequires:  rubygem-rake
 Requires:	rubygem-rake	
 
-Url:            http://github.org/jreidinger/packaging_tasks
+Url:            https://github.com/openSUSE/packaging_tasks
 Source:         %{mod_name}-%{version}.gem
 
 Summary:        Rake tasks shared by all YaST webservice packages
