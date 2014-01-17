@@ -147,7 +147,7 @@ namespace :osc do
 
       file = Tempfile.new('yast-rake')
       file.close
-      sh "osc cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
+      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
       original_version = version_from_spec(file.path)
       new_version      = version_from_spec("#{package_dir}/#{package_name}.spec")
 
