@@ -76,6 +76,7 @@ end
 
 Packaging.configuration do |conf|
   conf.obs_project = "devel:languages:ruby:extensions"
+  conf.obs_sr_project = "openSUSE:Factory"
   conf.package_name = "rubygem-packaging_rake_tasks"
 end
 # vim: ft=ruby
