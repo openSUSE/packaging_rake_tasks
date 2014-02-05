@@ -132,6 +132,9 @@ namespace :osc do
           changes = "Updated to git ref #{git_ref}"
         end
 
+        # provide only reasonable amount of changes
+        changes = changes.split("\n").take(10).join("\n")
+
         sh "osc", "commit", "-m", changes
         puts "New package submitted to #{obs_project}" if verbose
       end
