@@ -114,6 +114,7 @@ namespace :osc do
     end
   end
 
+  MAX_CHANGES_LINES = 20
   desc "Commit package to devel project in build service if sources are correct and build"
   task :commit => "osc:build" do
     begin
@@ -134,7 +135,7 @@ namespace :osc do
         end
 
         # provide only reasonable amount of changes
-        changes = changes.split("\n").take(10).join("\n")
+        changes = changes.split("\n").take(MAX_CHANGES_LINES).join("\n")
 
         sh "osc", "commit", "-m", changes
         puts "New package submitted to #{obs_project}" if verbose
