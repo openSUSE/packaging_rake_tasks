@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Feb  5 11:53:59 UTC 2014 - jreidinger@suse.com
+
+- pipe `yes` to osc build to automatic rebuild broken build root
+- reduce long changelog to prevent too long URI error with osc
+  commit
+- 1.0.14
+
+-------------------------------------------------------------------
 Fri Jan 17 14:53:46 UTC 2014 - jreidinger@suse.com
 
 - Fix reading file on target BS if server is not OBS
