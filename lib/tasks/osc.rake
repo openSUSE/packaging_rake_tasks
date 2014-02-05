@@ -96,7 +96,8 @@ namespace :osc do
       Dir.chdir osc_checkout_dir do
         puts "building package..." if verbose
 
-        command = "osc build"
+        # pipe yes to osc build to automatic rebuild broken build root if it happen
+        command = "yes | osc build"
         command << " --no-verify" #ignore untrusted BS projects
         command << " --release=1" #have always same release number
         # have separated roots per target system, so sharing is more effficient
