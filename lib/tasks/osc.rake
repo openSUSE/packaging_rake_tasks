@@ -170,7 +170,7 @@ namespace :osc do
   namespace "sr" do
     desc "Create submit request from devel project to target project without any other packaging or checking"
     task :force do
-      new_version = version_from_spec("#{package_dir}/*.spec")
+      new_version = version_from_spec("#{package_dir}/#{package_name}.spec")
       sh "yes | osc -A '#{obs_api}' sr '#{obs_project}' '#{package_name}' '#{obs_sr_project}' -m 'submit new version #{new_version}' --yes"
     end
   end
