@@ -171,7 +171,11 @@ namespace :osc do
     desc "Create submit request from devel project to target project without any other packaging or checking"
     task :force do
       new_version = version_from_spec("#{package_dir}/#{package_name}.spec")
-      sh "yes | osc -A '#{obs_api}' sr '#{obs_project}' '#{package_name}' '#{obs_sr_project}' -m 'submit new version #{new_version}' --yes"
+      if Packaging::Configuration.instance.maintenance_mode
+        sh "yes | osc -A '#{obs_api}' maintenancerequest --no-cleanup '#{obs_project}' '#{package_name}' '#{obs_sr_project}' -m 'submit new version #{new_version}'"
+      else
+        sh "yes | osc -A '#{obs_api}' submitreq --no-cleanup '#{obs_project}' '#{package_name}' '#{obs_sr_project}' -m 'submit new version #{new_version}' --yes"
+      end
     end
   end
 end

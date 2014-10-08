@@ -29,6 +29,7 @@ module Packaging
       @obs_api = "https://api.opensuse.org/"
       @obs_target = "openSUSE_Factory"
       @skip_license_check = []
+      @maintenance_mode = false
     end
 
     #custom package name, by default directory name
@@ -55,6 +56,8 @@ module Packaging
     attr_accessor :obs_target
     # additional list of regex to skip license check
     attr_accessor :skip_license_check
+    # Specify if project is in maintenance mode. If so, then it create maintenance request instead of pull request
+    attr_accessor :maintenance_mode
 
     def package_name
       @package_name ||= Dir.pwd.split("/").last

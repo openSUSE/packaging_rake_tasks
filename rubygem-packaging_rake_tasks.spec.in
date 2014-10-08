@@ -1,7 +1,7 @@
 #
-# spec file for package rubygem-webyast-rake-tasks (Version @VERSION@)
+# spec file for package rubygem-packaging_rake_tasks
 #
-# Copyright (c) 2009 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,48 +15,55 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-# norootforbuild
+
 Name:           rubygem-packaging_rake_tasks
 Version:        @VERSION@
 Release:        0
-
-# Nope, doesn't work. Gems are installed below /usr/lib{64}
-# BuildArch:      noarch
-
 %define mod_name packaging_rake_tasks
-#
-Group:          Development/Languages/Ruby
-License:        LGPL-2.1
+%define mod_full_name %{mod_name}-%{version}
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  rubygems_with_buildroot_patch
-Requires:       rubygems >= 1.2.0
+BuildRequires:  ruby-macros >= 3
+Url:            http://github.org/openSUSE/packaging_tasks
+Source:         http://rubygems.org/gems/%{mod_full_name}.gem
+Summary:        Rake tasks providing tasks to package project in git and integration
+License:        LGPL v2.1
+Group:          Development/Languages/Ruby
 
-BuildRequires:  rubygem-rake
-Requires:	rubygem-rake	
-
-Url:            https://github.com/openSUSE/packaging_tasks
-Source:         %{mod_name}-%{version}.gem
-
-Summary:        Rake tasks shared by all YaST webservice packages
 %description
-The original task package is renamed to package-local.
-The new task package includes the tasks git_check and syntax_check.
+Rake tasks to allow easy packaging ruby projects in git for Build Service or
+other packaging service.
+
+%package doc
+Summary:        RDoc documentation for %{mod_name}
+Group:          Development/Languages/Ruby
+Requires:       %{name} = %{version}
+
+%description doc
+Documentation generated at gem installation time.
+Usually in RDoc and RI formats.
 
 %prep
-%build
-%install
-%gem_install %{S:0}
+#gem_unpack
+#if you need patches, apply them here and replace the # with a % sign in the surrounding lines
+#gem_build
 
-%clean
-%{__rm} -rf %{buildroot}
+%build
+
+%install
+%gem_install -f
+mkdir -p %{buildroot}%{_docdir}/%{name}
+ln -s %{gem_base}/gems/%{mod_full_name}/COPYING %buildroot/%{_docdir}/%{name}/COPYING
 
 %files
 %defattr(-,root,root,-)
-%{_libdir}/ruby/gems/%{rb_ver}/cache/%{mod_name}-%{version}.gem
-%{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_name}-%{version}/
-%{_libdir}/ruby/gems/%{rb_ver}/specifications/%{mod_name}-%{version}.gemspec
-%doc %{_libdir}/ruby/gems/%{rb_ver}/doc/%{mod_name}-%{version}/
-%doc %{_libdir}/ruby/gems/%{rb_ver}/gems/%{mod_name}-%{version}/COPYING
+%{_docdir}/%{name}
+%{gem_base}/cache/%{mod_full_name}.gem
+%{gem_base}/gems/%{mod_full_name}/
+%{gem_base}/specifications/%{mod_full_name}.gemspec
+
+%files doc
+%defattr(-,root,root,-)
+%doc %{gem_base}/doc
 
 %changelog
