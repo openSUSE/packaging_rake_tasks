@@ -69,7 +69,7 @@ namespace :osc do
     end
 
     Dir.chdir(osc_checkout_dir) do 
-      sh "osc addremove"
+      sh "osc -A '#{obs_api}' addremove"
     end
   end
 
@@ -97,7 +97,7 @@ namespace :osc do
         puts "building package..." if verbose
 
         # pipe yes to osc build to automatic rebuild broken build root if it happen
-        command = "yes | osc build"
+        command = "yes | osc -A '#{obs_api}' build"
         command << " --no-verify" #ignore untrusted BS projects
         command << " --release=1" #have always same release number
         # have separated roots per target system, so sharing is more effficient
@@ -127,7 +127,7 @@ namespace :osc do
         # If a line starts with +, delete + and print it.
         # Except skip the added "-----" header and the timestamp-author after that,
         # and skip the +++ diff header
-        changes = `osc diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`.strip
+        changes = `osc -A '#{obs_api}' diff *.changes | sed -n '/^+---/,+2b;/^+++/b;s/^+//;T;p'`.strip
         if changes.empty?
           # %h is short hash of a commit
           git_ref = `git log --format=%h -n 1`.chomp
@@ -137,7 +137,7 @@ namespace :osc do
         # provide only reasonable amount of changes
         changes = changes.split("\n").take(MAX_CHANGES_LINES).join("\n")
 
-        sh "osc", "commit", "-m", changes
+        sh "osc", "-A", obs_api, "commit", "-m", changes
         puts "New package submitted to #{obs_project}" if verbose
       end
     ensure
