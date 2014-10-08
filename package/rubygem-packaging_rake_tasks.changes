@@ -3,8 +3,15 @@ Mon Oct  6 09:26:08 UTC 2014 - jreidinger@suse.com
 
 - Add configuration option for maintenance mode, which allows to
   create maintenance requests instead of pull requests
-- use new ruby packaging schema for rpm spec 
+- use new ruby packaging schema for rpm spec
 - 1.1.0
+
+-------------------------------------------------------------------
+Wed Apr 23 11:52:39 UTC 2014 - mvidner@suse.com
+
+- Always pass the conf.obs_api parameter so that osc does not
+  ask about a login to api.opensuse.org.
+- 1.0.16
 
 -------------------------------------------------------------------
 Fri Feb 21 15:35:25 UTC 2014 - mvidner@suse.com
