@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 13 16:22:40 UTC 2014 - lslezak@suse.cz
+
+- additionally report warnings in the "check:syntax" task
+- 1.1.1
+
+-------------------------------------------------------------------
 Mon Oct  6 09:26:08 UTC 2014 - jreidinger@suse.com
 
 - Add configuration option for maintenance mode, which allows to
