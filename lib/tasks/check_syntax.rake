@@ -33,7 +33,7 @@ namespace :check do
         raise
       end
 
-      res = `ruby -c #{file}`
+      res = `ruby -c -w #{file}`
       puts "#{file}: #{res}" if verbose
       raise "Syntax error found in file '#{file}'" unless $?.exitstatus.zero?
     end
