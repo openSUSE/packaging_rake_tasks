@@ -81,6 +81,24 @@ namespace :osc do
     version
   end
 
+  def check_changes!
+    Dir["#{package_dir}/*"].each do |f|
+      orig = f.sub(/#{package_dir}\//, "")
+      if orig =~ /\.(tar|tbz2|tgz|tlz)/ # tar archive, so ignore archive creation time otherwise it always looks like new one
+        cmd = "diff <(tar -tvf #{f} | sort) <(tar -tvf #{osc_checkout_dir}/#{orig} | sort)"
+      else
+        cmd = "diff #{f} #{osc_checkout_dir}/#{orig}"
+      end
+      puts cmd if verbose
+      puts `#cmd}`
+
+      return if $?.exitstatus != 0 # there is something new
+    end
+
+    puts "Stop commiting, no difference from devel project"
+    exit 0
+  end
+
   desc "Build package locally"
   task :build, [:osc_options] => ["check:osc", "package"] do |t, args|
     args.with_defaults = { :osc_options => "" }
@@ -119,6 +137,8 @@ namespace :osc do
   task :commit => "osc:build" do
     begin
       checkout
+      # check that there is some changes, otherwise it exit
+      check_changes!
       copy_sources
 
       Dir.chdir osc_checkout_dir do
