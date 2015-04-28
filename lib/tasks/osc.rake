@@ -90,7 +90,7 @@ namespace :osc do
         cmd = "diff #{f} #{osc_checkout_dir}/#{orig}"
       end
       puts cmd if verbose
-      puts `#cmd}`
+      puts `#{cmd}`
 
       return if $?.exitstatus != 0 # there is something new
     end
