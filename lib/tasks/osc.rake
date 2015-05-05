@@ -18,6 +18,7 @@
 
 require 'rake'
 require "tempfile"
+require "tmpdir"
 
 namespace :osc do
 
@@ -68,7 +69,7 @@ namespace :osc do
       cp f, osc_checkout_dir
     end
 
-    Dir.chdir(osc_checkout_dir) do 
+    Dir.chdir(osc_checkout_dir) do
       sh "osc -A '#{obs_api}' addremove"
     end
   end
@@ -81,19 +82,33 @@ namespace :osc do
     version
   end
 
+  def different_tarballs?(source1, source2)
+    Dir.mktmpdir("unpacked_tarball") do |d|
+      sh "tar xvf #{source1} -C #{d}"
+
+      Dir.mktmpdir("unpacked_tarball") do |d2|
+        sh "tar xvf #{source2} -C #{d2}"
+
+        res = `diff -r #{d} #{d2}`
+        puts res if verbose
+
+        return $?.exitstatus != 0
+      end
+    end
+  end
+
   def check_changes!
     # run spec file service to ensure that just formatting changes is not detected
     Dir.chdir(package_dir) { sh "/usr/lib/obs/service/format_spec_file --outdir ." }
     Dir["#{package_dir}/*"].each do |f|
       orig = f.sub(/#{package_dir}\//, "")
       if orig =~ /\.(tar|tbz2|tgz|tlz)/ # tar archive, so ignore archive creation time otherwise it always looks like new one
-        # sed is used to ignore file timestamps in tar file listing
-        cmd = "diff <(tar -tvf #{f} | sed 's/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}[[:space:]]\+[0-9]\{2\}:[0-9]\{2\}//' | sort) <(tar -tvf #{osc_checkout_dir}/#{orig} | sed 's/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}[[:space:]]\+[0-9]\{2\}:[0-9]\{2\}//' | sort)"
+        return if different_tarballs?(f, File.join(osc_checkout_dir, orig))
       else
         cmd = "diff #{f} #{osc_checkout_dir}/#{orig}"
+        puts cmd if verbose
+        puts `bash -c '#{cmd}'`
       end
-      puts cmd if verbose
-      puts `bash -c '#{cmd}'`
 
       return if $?.exitstatus != 0 # there is something new
     end
