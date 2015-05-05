@@ -82,6 +82,8 @@ namespace :osc do
   end
 
   def check_changes!
+    # run spec file service to ensure that just formatting changes is not detected
+    Dir.chdir(package_dir) { sh "/usr/lib/obs/service/format_spec_file --outdir ." }
     Dir["#{package_dir}/*"].each do |f|
       orig = f.sub(/#{package_dir}\//, "")
       if orig =~ /\.(tar|tbz2|tgz|tlz)/ # tar archive, so ignore archive creation time otherwise it always looks like new one
