@@ -87,7 +87,8 @@ namespace :osc do
     Dir["#{package_dir}/*"].each do |f|
       orig = f.sub(/#{package_dir}\//, "")
       if orig =~ /\.(tar|tbz2|tgz|tlz)/ # tar archive, so ignore archive creation time otherwise it always looks like new one
-        cmd = "diff <(tar -tvf #{f} | sort) <(tar -tvf #{osc_checkout_dir}/#{orig} | sort)"
+        # sed is used to ignore file timestamps in tar file listing
+        cmd = "diff <(tar -tvf #{f} | sed 's/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}[[:space:]]\+[0-9]\{2\}:[0-9]\{2\}//' | sort) <(tar -tvf #{osc_checkout_dir}/#{orig} | sed 's/[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}[[:space:]]\+[0-9]\{2\}:[0-9]\{2\}//' | sort)"
       else
         cmd = "diff #{f} #{osc_checkout_dir}/#{orig}"
       end
