@@ -108,9 +108,9 @@ namespace :osc do
         cmd = "diff #{f} #{osc_checkout_dir}/#{orig}"
         puts cmd if verbose
         puts `bash -c '#{cmd}'`
-      end
 
-      return if $?.exitstatus != 0 # there is something new
+        return if $?.exitstatus != 0 # there is something new
+      end
     end
 
     puts "Stop commiting, no difference from devel project"
