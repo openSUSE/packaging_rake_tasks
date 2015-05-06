@@ -83,16 +83,16 @@ namespace :osc do
   end
 
   def different_tarballs?(source1, source2)
-    Dir.mktmpdir("unpacked_tarball") do |d|
-      sh "tar xvf #{source1} -C #{d}"
+    Dir.mktmpdir("unpacked_tarball") do |d1|
+      sh "tar xvf #{source1} -C #{d1}"
 
       Dir.mktmpdir("unpacked_tarball") do |d2|
         sh "tar xvf #{source2} -C #{d2}"
 
-        res = `diff -r #{d} #{d2}`
+        res = `diff -ur #{d1} #{d2}`
         puts res if verbose
 
-        return $?.exitstatus != 0
+        return !$?.success?
       end
     end
   end
@@ -105,11 +105,11 @@ namespace :osc do
       if orig =~ /\.(tar|tbz2|tgz|tlz)/ # tar archive, so ignore archive creation time otherwise it always looks like new one
         return if different_tarballs?(f, File.join(osc_checkout_dir, orig))
       else
-        cmd = "diff #{f} #{osc_checkout_dir}/#{orig}"
+        cmd = "diff -u #{f} #{osc_checkout_dir}/#{orig}"
         puts cmd if verbose
         puts `bash -c '#{cmd}'`
 
-        return if $?.exitstatus != 0 # there is something new
+        return unless $?.success? # there is something new
       end
     end
 

@@ -1,7 +1,7 @@
 -------------------------------------------------------------------
 Tue Apr 28 15:51:40 UTC 2015 - jreidinger@suse.com
 
-- stop osc commit if there is no changes
+- stop osc commit if there is no change
 - 1.1.2
 
 -------------------------------------------------------------------
