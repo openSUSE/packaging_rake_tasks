@@ -1,7 +1,7 @@
 #
 # spec file for package rubygem-packaging_rake_tasks
 #
-# Copyright (c) 2014 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2015 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -27,7 +27,7 @@ BuildRequires:  ruby-macros >= 3
 Url:            http://github.org/openSUSE/packaging_tasks
 Source:         http://rubygems.org/gems/%{mod_full_name}.gem
 Summary:        Rake tasks providing tasks to package project in git and integration
-License:        LGPL v2.1
+License:        LGPL-2.1
 Group:          Development/Languages/Ruby
 
 %description

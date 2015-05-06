@@ -18,6 +18,7 @@
 
 require 'rake'
 require "tempfile"
+require "tmpdir"
 
 namespace :osc do
 
@@ -68,7 +69,7 @@ namespace :osc do
       cp f, osc_checkout_dir
     end
 
-    Dir.chdir(osc_checkout_dir) do 
+    Dir.chdir(osc_checkout_dir) do
       sh "osc -A '#{obs_api}' addremove"
     end
   end
@@ -79,6 +80,41 @@ namespace :osc do
     version.sub!(/#.*$/, "")
     version.strip!
     version
+  end
+
+  def different_tarballs?(source1, source2)
+    Dir.mktmpdir("unpacked_tarball") do |d1|
+      sh "tar xvf #{source1} -C #{d1}"
+
+      Dir.mktmpdir("unpacked_tarball") do |d2|
+        sh "tar xvf #{source2} -C #{d2}"
+
+        res = `diff -ur #{d1} #{d2}`
+        puts res if verbose
+
+        return !$?.success?
+      end
+    end
+  end
+
+  def check_changes!
+    # run spec file service to ensure that just formatting changes is not detected
+    Dir.chdir(package_dir) { sh "/usr/lib/obs/service/format_spec_file --outdir ." }
+    Dir["#{package_dir}/*"].each do |f|
+      orig = f.sub(/#{package_dir}\//, "")
+      if orig =~ /\.(tar|tbz2|tgz|tlz)/ # tar archive, so ignore archive creation time otherwise it always looks like new one
+        return if different_tarballs?(f, File.join(osc_checkout_dir, orig))
+      else
+        cmd = "diff -u #{f} #{osc_checkout_dir}/#{orig}"
+        puts cmd if verbose
+        puts `bash -c '#{cmd}'`
+
+        return unless $?.success? # there is something new
+      end
+    end
+
+    puts "Stop commiting, no difference from devel project"
+    exit 0
   end
 
   desc "Build package locally"
@@ -119,6 +155,8 @@ namespace :osc do
   task :commit => "osc:build" do
     begin
       checkout
+      # check that there is some changes, otherwise it exit
+      check_changes!
       copy_sources
 
       Dir.chdir osc_checkout_dir do
