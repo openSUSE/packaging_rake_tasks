@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 14 12:06:01 UTC 2015 - jreidinger@suse.com
+
+- Do not crash if tarball have different name in devel project
+- 1.1.3
+
+-------------------------------------------------------------------
 Tue Apr 28 15:51:40 UTC 2015 - jreidinger@suse.com
 
 - stop osc commit if there is no change
