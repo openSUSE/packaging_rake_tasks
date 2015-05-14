@@ -83,6 +83,8 @@ namespace :osc do
   end
 
   def different_tarballs?(source1, source2)
+    return true if !File.exist?(source1) || !File.exist?(source2)
+
     Dir.mktmpdir("unpacked_tarball") do |d1|
       sh "tar xvf #{source1} -C #{d1}"
 
