@@ -21,11 +21,13 @@ Version:        @VERSION@
 Release:        0
 %define mod_name packaging_rake_tasks
 %define mod_full_name %{mod_name}-%{version}
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
-BuildRequires:  ruby-macros >= 3
+BuildRequires:  ruby-macros >= 5
+BuildRequires:  %{ruby}
+BuildRequires:  %{rubygem gem2rpm}
 Url:            http://github.org/openSUSE/packaging_tasks
 Source:         http://rubygems.org/gems/%{mod_full_name}.gem
+Source1:        gem2rpm.yml
 Summary:        Rake tasks providing tasks to package project in git and integration
 License:        LGPL-2.1
 Group:          Development/Languages/Ruby
@@ -34,36 +36,15 @@ Group:          Development/Languages/Ruby
 Rake tasks to allow easy packaging ruby projects in git for Build Service or
 other packaging service.
 
-%package doc
-Summary:        RDoc documentation for %{mod_name}
-Group:          Development/Languages/Ruby
-Requires:       %{name} = %{version}
-
-%description doc
-Documentation generated at gem installation time.
-Usually in RDoc and RI formats.
-
 %prep
-#gem_unpack
-#if you need patches, apply them here and replace the # with a % sign in the surrounding lines
-#gem_build
 
 %build
 
 %install
-%gem_install -f
-mkdir -p %{buildroot}%{_docdir}/%{name}
-ln -s %{gem_base}/gems/%{mod_full_name}/COPYING %buildroot/%{_docdir}/%{name}/COPYING
+%gem_install \
+  --doc-files="COPYING" \
+  -f
 
-%files
-%defattr(-,root,root,-)
-%{_docdir}/%{name}
-%{gem_base}/cache/%{mod_full_name}.gem
-%{gem_base}/gems/%{mod_full_name}/
-%{gem_base}/specifications/%{mod_full_name}.gemspec
-
-%files doc
-%defattr(-,root,root,-)
-%doc %{gem_base}/doc
+%gem_packages
 
 %changelog

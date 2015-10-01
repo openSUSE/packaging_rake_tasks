@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu May 14 14:28:25 UTC 2014 - coolo@suse.com
+
+- adapt to new rubygem packaging
+
+-------------------------------------------------------------------
 Thu May 14 12:06:01 UTC 2015 - jreidinger@suse.com
 
 - Do not crash if tarball have different name in devel project
