@@ -74,6 +74,21 @@ namespace :osc do
     end
   end
 
+  def check_IDs_in_changes_file!
+    # Checking if any new bugzilla,fate,... IDs are defined
+    # in the *.changes file
+    puts "Checking IDs in *.changes file" if verbose
+    Dir.chdir(osc_checkout_dir) do
+      cmd = "osc -A '#{obs_api}' diff *.changes | grep \"bnc#[0-9]\\|fate#[0-9]\\|boo#[0-9]\\|bsc#[0-9]\\|bgo#[0-9]\""
+      puts cmd if verbose
+      `bash -c '#{cmd}'`
+      return if $?.success?
+    end
+    puts "Stopping, missing new bugzilla or fate entry in the *.changes file"
+    puts "Valid entries are bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>"
+    exit 0
+  end
+
   def version_from_spec spec_glob
     version = `grep '^Version:' #{spec_glob}`
     version.sub!(/^Version:\s*/, "")
@@ -127,6 +142,7 @@ namespace :osc do
     begin
       checkout
       copy_sources
+      check_IDs_in_changes_file!
       puts "Building package #{package_name} from project #{obs_project}" if verbose
 
       pkg_dir = File.join("/var/tmp", obs_project, build_dist)
@@ -160,6 +176,7 @@ namespace :osc do
       # check that there is some changes, otherwise it exit
       check_changes!
       copy_sources
+      check_IDs_in_changes_file!
 
       Dir.chdir osc_checkout_dir do
         puts "submitting package..." if verbose
