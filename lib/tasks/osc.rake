@@ -74,19 +74,53 @@ namespace :osc do
     end
   end
 
+  def version_changed? updated_spec_file
+    begin
+      file = Tempfile.new('yast-rake')
+      file.close
+      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
+      original_version = version_from_spec(file.path)
+      new_version      = version_from_spec(updated_spec_file)
+
+      if new_version == original_version
+        puts "Version has not been changed in *.spec file" if verbose
+        return false
+      else
+        puts "Version has been changed in *.spec file" if verbose
+        return true
+      end
+    ensure
+      file.unlink if file
+    end
+  end
+
   def check_IDs_in_changes_file!
     # Checking if any new bugzilla,fate,... IDs are defined
     # in the *.changes file
     puts "Checking IDs in *.changes file" if verbose
-    Dir.chdir(osc_checkout_dir) do
-      cmd = "osc -A '#{obs_api}' diff *.changes | grep -i \"bnc#[0-9]\\|fate#[0-9]\\|boo#[0-9]\\|bsc#[0-9]\\|bgo#[0-9]\\|cve-[0-9]\""
-      puts cmd if verbose
-      `bash -c '#{cmd}'`
-      return if $?.success?
+
+    # Checking make only sense when the version in the *.spec file has been changed
+    if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
+      Dir.chdir(osc_checkout_dir) do
+        # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
+        cmd = "osc -A '#{obs_api}' diff *.changes | grep -i "\
+          "\"bnc#[0-9]\\+\\|"\
+          "fate#[0-9]\\+\\|"\
+          "boo#[0-9]\\+\\|"\
+          "bsc#[0-9]\\+\\|"\
+          "bgo#[0-9]\\+\\|"\
+          "cve-[0-9]\\{4\\}-[0-9]\\+\""
+        puts cmd if verbose
+        `bash -c '#{cmd}'`
+        return if $?.success?
+      end
+    else
+      puts "=> do not check for IDs in *.changes file"
+      return
     end
     puts "Stopping, missing new bugzilla or fate entry in the *.changes file"
     puts "Valid entries are bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>"
-    exit 0
+    exit 1
   end
 
   def version_from_spec spec_glob
@@ -206,21 +240,13 @@ namespace :osc do
   task :sr => "osc:commit" do
     begin
       checkout
-
-      file = Tempfile.new('yast-rake')
-      file.close
-      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
-      original_version = version_from_spec(file.path)
-      new_version      = version_from_spec("#{package_dir}/#{package_name}.spec")
-
-      if new_version == original_version
-        puts "No version change => no submit request" if verbose
+      unless version_changed?( "#{package_dir}/#{package_name}.spec" )
+        puts "=> no submit request" if verbose
       else
         Rake::Task["osc:sr:force"].execute
       end
     ensure
       cleaning
-      file.unlink if file
     end
   end
 
