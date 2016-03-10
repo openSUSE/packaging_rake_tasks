@@ -79,7 +79,7 @@ namespace :osc do
     # in the *.changes file
     puts "Checking IDs in *.changes file" if verbose
     Dir.chdir(osc_checkout_dir) do
-      cmd = "osc -A '#{obs_api}' diff *.changes | grep \"bnc#[0-9]\\|fate#[0-9]\\|boo#[0-9]\\|bsc#[0-9]\\|bgo#[0-9]\""
+      cmd = "osc -A '#{obs_api}' diff *.changes | grep -i \"bnc#[0-9]\\|fate#[0-9]\\|boo#[0-9]\\|bsc#[0-9]\\|bgo#[0-9]\\|cve-[0-9]\""
       puts cmd if verbose
       `bash -c '#{cmd}'`
       return if $?.success?
