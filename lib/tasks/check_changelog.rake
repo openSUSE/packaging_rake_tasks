@@ -24,7 +24,7 @@ namespace "check" do
       copy_sources
 
       puts "Checking IDs in *.changes file" if verbose
-      # Checking make only sense when the version in the *.spec file has been changed
+      # Checking makes only sense if the version in the *.spec file has been changed
       if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
         Dir.chdir(osc_checkout_dir) do
           # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
@@ -39,7 +39,7 @@ namespace "check" do
           `bash -c '#{cmd}'`
           unless $?.success?
             raise "Stopping, missing new bugzilla or fate entry in the *.changes file.\n"\
-                  "e.g. bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>, cve-<number>"
+              "e.g. bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>, cve-<number>"
           end
         end
       else

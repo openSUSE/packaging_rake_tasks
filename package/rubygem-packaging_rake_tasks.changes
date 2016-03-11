@@ -2,7 +2,7 @@
 Wed Mar  9 10:43:06 CET 2016 - schubi@suse.de
 
 - Checking *.changes file for new bugzilla, fate,... IDs before
-  submitting to OBS.
+  packaging.
   (bnc#0)
 - 1.1.4
 
