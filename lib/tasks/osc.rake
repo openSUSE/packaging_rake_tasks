@@ -94,35 +94,6 @@ namespace :osc do
     end
   end
 
-  def check_IDs_in_changes_file!
-    # Checking if any new bugzilla,fate,... IDs are defined
-    # in the *.changes file
-    puts "Checking IDs in *.changes file" if verbose
-
-    # Checking make only sense when the version in the *.spec file has been changed
-    if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
-      Dir.chdir(osc_checkout_dir) do
-        # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
-        cmd = "osc -A '#{obs_api}' diff *.changes | grep -i "\
-          "\"bnc#[0-9]\\+\\|"\
-          "fate#[0-9]\\+\\|"\
-          "boo#[0-9]\\+\\|"\
-          "bsc#[0-9]\\+\\|"\
-          "bgo#[0-9]\\+\\|"\
-          "cve-[0-9]\\{4\\}-[0-9]\\+\""
-        puts cmd if verbose
-        `bash -c '#{cmd}'`
-        return if $?.success?
-      end
-    else
-      puts "=> do not check for IDs in *.changes file"
-      return
-    end
-    puts "Stopping, missing new bugzilla or fate entry in the *.changes file"
-    puts "Valid entries are bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>"
-    exit 1
-  end
-
   def version_from_spec spec_glob
     version = `grep '^Version:' #{spec_glob}`
     version.sub!(/^Version:\s*/, "")
@@ -176,7 +147,6 @@ namespace :osc do
     begin
       checkout
       copy_sources
-      check_IDs_in_changes_file!
       puts "Building package #{package_name} from project #{obs_project}" if verbose
 
       pkg_dir = File.join("/var/tmp", obs_project, build_dist)
@@ -210,7 +180,6 @@ namespace :osc do
       # check that there is some changes, otherwise it exit
       check_changes!
       copy_sources
-      check_IDs_in_changes_file!
 
       Dir.chdir osc_checkout_dir do
         puts "submitting package..." if verbose
@@ -259,6 +228,41 @@ namespace :osc do
       else
         sh "yes | osc -A '#{obs_api}' submitreq --no-cleanup '#{obs_project}' '#{package_name}' '#{obs_sr_project}' -m 'submit new version #{new_version}' --yes"
       end
+    end
+  end
+end
+
+namespace "check" do
+  desc "Checking for new IDs (bugzilla,fate,...)  in *.changes file"
+  task :changelog do
+    begin
+      checkout
+      copy_sources
+
+      puts "Checking IDs in *.changes file" if verbose
+      # Checking make only sense when the version in the *.spec file has been changed
+      if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
+        Dir.chdir(osc_checkout_dir) do
+          # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
+          cmd = "osc -A '#{obs_api}' diff *.changes | grep -i "\
+            "\"bnc#[0-9]\\+\\|"\
+            "fate#[0-9]\\+\\|"\
+            "boo#[0-9]\\+\\|"\
+            "bsc#[0-9]\\+\\|"\
+            "bgo#[0-9]\\+\\|"\
+            "cve-[0-9]\\{4\\}-[0-9]\\+\""
+          puts cmd if verbose
+          `bash -c '#{cmd}'`
+          unless $?.success?
+            raise "Stopping, missing new bugzilla or fate entry in the *.changes file.\n"\
+                  "e.g. bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>, cve-<number>"
+          end
+        end
+      else
+        puts "=> do not check for IDs in *.changes file"
+      end
+    ensure
+      cleaning
     end
   end
 end
