@@ -28,16 +28,10 @@ namespace "check" do
       if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
         Dir.chdir(osc_checkout_dir) do
           # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
-          cmd = "osc -A '#{obs_api}' diff *.changes | grep -i "\
-            "\"bnc#[0-9]\\+\\|"\
-            "fate#[0-9]\\+\\|"\
-            "boo#[0-9]\\+\\|"\
-            "bsc#[0-9]\\+\\|"\
-            "bgo#[0-9]\\+\\|"\
-            "cve-[0-9]\\{4\\}-[0-9]\\+\""
+          cmd = "osc -A '#{obs_api}' diff *.changes"
           puts cmd if verbose
-          `bash -c '#{cmd}'`
-          unless $?.success?
+          ret = `bash -c '#{cmd}'`
+          unless ret.match(/(bnc|fate|boo|bsc|bgo)#[0-9]+/i) || ret.match(/cve-[0-9]{4}-[0-9]+/i)
             raise "Stopping, missing new bugzilla or fate entry in the *.changes file.\n"\
               "e.g. bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, bgo#<number>, cve-<number>"
           end
