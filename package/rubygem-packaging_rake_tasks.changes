@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Mar  9 10:43:06 CET 2016 - schubi@suse.de
+
+- Checking *.changes file for new bugzilla, fate,... IDs before
+  packaging.
+  (bnc#0)
+- 1.1.4
+
+-------------------------------------------------------------------
 Thu May 14 14:28:25 UTC 2015 - coolo@suse.com
 
 - adapt to new rubygem packaging

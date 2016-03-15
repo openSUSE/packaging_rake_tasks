@@ -74,6 +74,26 @@ namespace :osc do
     end
   end
 
+  def version_changed? updated_spec_file
+    begin
+      file = Tempfile.new('yast-rake')
+      file.close
+      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
+      original_version = version_from_spec(file.path)
+      new_version      = version_from_spec(updated_spec_file)
+
+      if new_version == original_version
+        puts "Version has not been changed in *.spec file" if verbose
+        return false
+      else
+        puts "Version has been changed in *.spec file" if verbose
+        return true
+      end
+    ensure
+      file.unlink if file
+    end
+  end
+
   def version_from_spec spec_glob
     version = `grep '^Version:' #{spec_glob}`
     version.sub!(/^Version:\s*/, "")
@@ -189,21 +209,13 @@ namespace :osc do
   task :sr => "osc:commit" do
     begin
       checkout
-
-      file = Tempfile.new('yast-rake')
-      file.close
-      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
-      original_version = version_from_spec(file.path)
-      new_version      = version_from_spec("#{package_dir}/#{package_name}.spec")
-
-      if new_version == original_version
-        puts "No version change => no submit request" if verbose
+      unless version_changed?( "#{package_dir}/#{package_name}.spec" )
+        puts "=> no submit request" if verbose
       else
         Rake::Task["osc:sr:force"].execute
       end
     ensure
       cleaning
-      file.unlink if file
     end
   end
 
