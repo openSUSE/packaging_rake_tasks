@@ -28,7 +28,8 @@ namespace "check" do
       if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
         Dir.chdir(osc_checkout_dir) do
           # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
-          cmd = "osc -A '#{obs_api}' diff *.changes"
+          cmd = "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' "\
+            "'#{package_name}.changes' | diff - '#{package_name}.changes'"
           puts cmd if verbose
           ret = `bash -c '#{cmd}'`
           unless ret.match(/(bnc|fate|boo|bsc|bgo)#[0-9]+/i) || ret.match(/cve-[0-9]{4}-[0-9]+/i)
