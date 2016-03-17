@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 17 16:16:30 UTC 2016 - igonzalezsosa@suse.com
+
+- Avoid checking for bug IDs when obs_sr_project is not defined
+  (bnc#0)
+- 1.1.6
+
+-------------------------------------------------------------------
 Thu Mar 17 12:33:14 UTC 2016 - igonzalezsosa@suse.com
 
 - When checking for bug IDs in *.changes, diff against
