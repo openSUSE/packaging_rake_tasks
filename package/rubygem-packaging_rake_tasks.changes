@@ -1,8 +1,9 @@
 -------------------------------------------------------------------
 Thu Mar 17 12:33:14 UTC 2016 - igonzalezsosa@suse.com
 
-- Compare with sr_project when checking *.changes file for
-  IDs (bnc#0)
+- When checking for bug IDs in *.changes, diff against
+  obs_sr_project, not obs_project, to be consistent with the
+  version checker (bnc#0)
 - 1.1.5
 
 -------------------------------------------------------------------
