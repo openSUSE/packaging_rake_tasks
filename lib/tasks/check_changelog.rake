@@ -20,8 +20,8 @@ namespace "check" do
   desc "Checking for new IDs (bugzilla,fate,...) in *.changes file"
   task :changelog do
     if obs_sr_project.nil?
-      $stderr.puts "Skipping the check because OBS submit request project "\
-        "is not defined (obs_sr_project)."
+      $stderr.puts "Skipping the changelog check because OBS submit request project "\
+        "is not defined (obs_sr_project)." if verbose
       next
     end
     begin
