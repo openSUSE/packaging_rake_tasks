@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Apr  1 12:16:56 UTC 2016 - mvidner@suse.com
+
+- Fixed snapper submission (bsc#973607)
+  - check:changelog only before osc:sr
+  - check:changelog depends on package, not the reverse
+- 1.2.1
+
+-------------------------------------------------------------------
 Thu Mar 17 16:16:30 UTC 2016 - igonzalezsosa@suse.com
 
 - Avoid checking for bug IDs when obs_sr_project is not defined

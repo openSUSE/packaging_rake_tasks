@@ -20,5 +20,5 @@ require 'rake'
 
 desc 'Prepare sources for rpm build'
 # just call the checks and then build the package
-task :package => ["check:syntax", "check:committed", "check:changelog", :test, :tarball]
+task :package => ["check:syntax", "check:committed", :test, :tarball]
 

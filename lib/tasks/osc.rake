@@ -206,7 +206,7 @@ namespace :osc do
   end
 
   desc "Create submit request from updated devel project to target project if version change."
-  task :sr => "osc:commit" do
+  task :sr => ["check:changelog", "osc:commit"] do
     begin
       checkout
       unless version_changed?( "#{package_dir}/#{package_name}.spec" )
