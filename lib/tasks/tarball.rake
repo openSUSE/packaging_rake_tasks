@@ -87,6 +87,14 @@ task :tarball do
   begin
     Rake::Task[File.join(config.package_dir, package_file_name+".tar.bz2")].invoke
   ensure
+    # repackage with reset time stapms to build the same package,
+    # the Rake::PackageTask does not allow to pass the tar options :-(
+    sh "tar jcvf #{Shellwords.escape(package_file_name)}.tar.bz2 --mtime=@0 " \
+      "--owner=0 --group=0 --pax-option=exthdr.name=%d/PaxHeaders/%f,atime:=0," \
+      "ctime:=0,mtime:=0 -C #{Shellwords.escape(config.package_dir)} " \
+      "#{Shellwords.escape(package_file_name)}"
+    FileUtils.mv(package_file_name+".tar.bz2", config.package_dir)
+
     rm_rf File.join(config.package_dir, package_file_name)
   end
 end
