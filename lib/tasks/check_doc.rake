@@ -18,10 +18,13 @@ require "packaging/configuration"
 
 def check_doc_output
   ENV["LANG"] = "C"
-  result = sh "yardoc"
+  puts "Generating documentation..." if verbose
+  result = `yardoc`
   if $?.exitstatus != 0
     raise "yardoc failed"
   end
+
+  puts result if verbose
 
   lines = result.lines
 
