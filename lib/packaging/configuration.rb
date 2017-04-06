@@ -30,6 +30,8 @@ module Packaging
       @obs_target = "openSUSE_Factory"
       @skip_license_check = []
       @maintenance_mode = false
+      @check_documentation = false
+      @documentation_minimal = 0
     end
 
     #custom package name, by default directory name
@@ -58,6 +60,9 @@ module Packaging
     attr_accessor :skip_license_check
     # Specify if project is in maintenance mode. If so, then it create maintenance request instead of pull request
     attr_accessor :maintenance_mode
+    # Minimal documentation coverage to pass check:doc
+    # Default value is 0.
+    attr_accessor :documentation_minimal
 
     def package_name
       @package_name ||= Dir.pwd.split("/").last

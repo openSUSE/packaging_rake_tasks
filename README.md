@@ -36,6 +36,11 @@ It doesn't check if changes
 are sent to a remote git repository. Its main intention is to ensure that all
 changes are tracked before making a package.
 
+### check:doc
+checks if documentation contain issues. It also checks if documentation level
+is at least as high as configured in {Configuration#documentation\_minimal}.
+Currently supported documentation formats: yardoc.
+
 ### check:license
 Checks if all non-trivial files have a license header.
 It is needed because there are
