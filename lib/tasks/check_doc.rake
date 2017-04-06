@@ -59,7 +59,7 @@ def check_doc
 end
 
 namespace "check" do
-  desc "Check for errors in documentation and minimal coverage ( currently supported: rubydoc)"
+  desc "Check for errors in documentation and minimal coverage (supported: rubydoc)"
   task :doc do
     check_doc
   end
