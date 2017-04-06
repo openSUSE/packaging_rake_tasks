@@ -30,7 +30,6 @@ module Packaging
       @obs_target = "openSUSE_Factory"
       @skip_license_check = []
       @maintenance_mode = false
-      @check_documentation = false
       @documentation_minimal = 0
     end
 
