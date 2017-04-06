@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr  6 10:05:22 UTC 2017 - jreidinger@suse.com
+
+- Add new task for check documentation (check:doc)
+- 1.3.0
+
+-------------------------------------------------------------------
 Fri Apr  1 12:16:56 UTC 2016 - mvidner@suse.com
 
 - Fixed snapper submission (bsc#973607)
