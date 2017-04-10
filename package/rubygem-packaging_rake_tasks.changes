@@ -2,7 +2,13 @@
 Mon Apr 10 07:30:44 UTC 2017 - jreidinger@suse.com
 
 - sync IDs in check:changelog with build service
-- 1.2.2
+- 1.3.1
+
+-------------------------------------------------------------------
+Thu Apr  6 10:05:22 UTC 2017 - jreidinger@suse.com
+
+- Add new task for check documentation (check:doc)
+- 1.3.0
 
 -------------------------------------------------------------------
 Fri Apr  1 12:16:56 UTC 2016 - mvidner@suse.com
