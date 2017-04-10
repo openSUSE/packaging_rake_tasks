@@ -73,7 +73,7 @@ namespace "check" do
           unless ID_MATCHERS.any?{|m| ret.match(m) }
             raise "Stopping, missing new bugzilla or fate entry " \
               "in the *.changes file.\n"\
-              "e.g. bnc#<number> or  fate#<number>"
+              "e.g. bnc#<number> or fate#<number>"
           end
         end
       else
