@@ -16,6 +16,37 @@
 
 require 'rake'
 
+
+# try to keep it in sync with https://github.com/openSUSE/open-build-service/blob/master/src/api/db/seeds.rb
+ID_MATCHERS = [
+  /boost#(\d+)/,
+  /bco#(\d+)/,
+  /RT#(\d+)/,
+  /CVE-(\d\d\d\d-\d+)/,
+  /deb#(\d+)/,
+  /fdo#(\d+)/,
+  /GCC#(\d+)/,
+  /bgo#(\d+)/,
+  /bio#(\d+)/,
+  /(?:Kernel|K|bko)#(\d+)/,
+  /kde#(\d+)/,
+  /b?lp#(\d+)/,
+  /Meego#(\d+)/,
+  /bmo#(\d+)/,
+  /(?:bnc|BNC|bsc|BSC|boo|BOO)\s*[#:]\s*(\d+)/,
+  /ITS#(\d+)/,
+  /i#(\d+)/,
+  /(?:fate|Fate|FATE)\s*#\s*(\d+)/,
+  /rh#(\d+)/,
+  /bso#(\d+)/,
+  /sf#(\d+)/,
+  /(?:bxc|Xamarin)#(\d+)/,
+  /bxo#(\d+)/,
+  /obs#(\d+)/,
+  /build#(\d+)/,
+  /osc#(\d+)/
+]
+
 namespace "check" do
   desc "Checking for new IDs (bugzilla,fate,...) in *.changes file"
   task :changelog => :package do
@@ -34,18 +65,15 @@ namespace "check" do
       # has been changed
       if version_changed?( "#{osc_checkout_dir}/#{package_name}.spec" )
         Dir.chdir(osc_checkout_dir) do
-          # Tags described in https://github.com/openSUSE/osc-plugin-factory/blob/e12bc02e9817277335ce6adaa8e8d334d03fcc5d/check_tags_in_requests.py#L63
           cmd = "osc -A '#{obs_api}' cat " \
             " '#{obs_sr_project}' '#{package_name}' '#{package_name}.changes' "\
             "| diff - '#{package_name}.changes'"
           puts cmd if verbose
           ret = `bash -c '#{cmd}'`
-          unless ret.match(/(bnc|fate|boo|bsc|bgo)#[0-9]+/i) ||
-                 ret.match(/cve-[0-9]{4}-[0-9]+/i)
+          unless ID_MATCHERS.any?{|m| ret.match(m) }
             raise "Stopping, missing new bugzilla or fate entry " \
               "in the *.changes file.\n"\
-              "e.g. bnc#<number>, fate#<number>, boo#<number>, bsc#<number>, " \
-              "bgo#<number>, cve-<number>"
+              "e.g. bnc#<number> or fate#<number>"
           end
         end
       else
