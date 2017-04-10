@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Apr 10 07:30:44 UTC 2017 - jreidinger@suse.com
+
+- sync IDs in check:changelog with build service
+- 1.2.2
+
+-------------------------------------------------------------------
 Fri Apr  1 12:16:56 UTC 2016 - mvidner@suse.com
 
 - Fixed snapper submission (bsc#973607)
