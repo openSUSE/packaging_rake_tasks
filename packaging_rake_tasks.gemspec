@@ -26,7 +26,7 @@ spec.license    = "LGPL v2.1"
 # author
 spec.author	= "Josef Reidinger"
 spec.email	= "jreidinger@suse.cz"
-spec.homepage	= "http://github.org/openSUSE/packaging_tasks"
+spec.homepage	= "https://github.com/openSUSE/packaging_rake_tasks"
 
 spec.description = "Rake tasks to allow easy packaging ruby projects in git for Build Service or other packaging service"
 
