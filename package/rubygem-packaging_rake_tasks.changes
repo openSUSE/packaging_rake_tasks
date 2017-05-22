@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May 22 09:39:11 UTC 2017 - lslezak@suse.cz
+
+- sync the gem2rpm.yml changes from IBS
+
+-------------------------------------------------------------------
 Mon Apr 10 07:30:44 UTC 2017 - jreidinger@suse.com
 
 - sync IDs in check:changelog with build service

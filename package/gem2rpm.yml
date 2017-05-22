@@ -23,7 +23,7 @@
 #   foo.patch: -p1
 #   bar.patch: 
 # ## used by gem2rpm
-:sources:
+# :sources:
 # - foo.desktop
 # - bar.desktop
 # :gem_install_args: '....'
@@ -68,3 +68,5 @@
 #     :post: |-
 #       /bin/echo foo
 #
+---
+:license: LGPL-2.1
