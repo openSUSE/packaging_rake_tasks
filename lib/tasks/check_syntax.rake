@@ -15,6 +15,15 @@
 #++
 
 require 'rake'
+begin
+  require 'parallel'
+rescue LoadError
+  module Parallel
+    def self.each(enum, options = {}, &block)
+      enum.each(&block)
+    end
+  end
+end
 
 namespace :check do
   desc "Check syntax of all Ruby (*.rb) files"
@@ -22,7 +31,8 @@ namespace :check do
     puts "* Starting syntax check..." if verbose
 
     # check all *.rb files
-    Dir.glob("**/*.rb").each do |file|
+    files = Dir.glob("**/*.rb")
+    Parallel.each(files) do |file|
       # skip rspec files as it is not pure ruby scripts and ruby -c failed
       begin
         next unless File.readlines(file, $\, :encoding => "UTF-8").grep(/^#!.*rspec/).empty?

@@ -25,6 +25,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  ruby-macros >= 5
 BuildRequires:  %{ruby}
 BuildRequires:  %{rubygem gem2rpm}
+Suggests:       %{rubygem parallel}
 Url:            http://github.org/openSUSE/packaging_tasks
 Source:         http://rubygems.org/gems/%{mod_full_name}.gem
 Source1:        gem2rpm.yml

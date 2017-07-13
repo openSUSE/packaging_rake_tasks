@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Jul 13 07:30:27 UTC 2017 - jreidinger@suse.com
+
+- If package is missing in target sr repository consider it like
+  different version and do not crash ( needed for SLE15 submission
+  so part of bsc#1044312)
+- 1.3.3
+
+-------------------------------------------------------------------
+Mon May 29 11:17:34 UTC 2017 - mvidner@suse.com
+
+- If parallel.gem is available, use it to speed up check:syntax
+- 1.3.2
+
+-------------------------------------------------------------------
 Mon May 22 09:39:11 UTC 2017 - lslezak@suse.cz
 
 - sync the gem2rpm.yml changes from IBS
