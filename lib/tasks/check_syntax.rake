@@ -44,7 +44,8 @@ namespace :check do
       end
 
       res = `ruby -c -w #{file}`
-      puts "#{file}: #{res}" if verbose
+      res = res.lines.reject { |s| s == "Syntax OK\n" }.join ""
+      puts res unless res.empty?
       raise "Syntax error found in file '#{file}'" unless $?.exitstatus.zero?
     end
 
