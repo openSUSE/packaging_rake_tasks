@@ -78,7 +78,12 @@ namespace :osc do
     begin
       file = Tempfile.new('yast-rake')
       file.close
-      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}"
+      sh "osc -A '#{obs_api}' cat '#{obs_sr_project}' '#{package_name}' '#{package_name}.spec' > #{file.path}" do |ok, res|
+        if !ok
+          puts "Version cannot be compared, so act like it is different" if verbose
+          return true
+        end
+      end
       original_version = version_from_spec(file.path)
       new_version      = version_from_spec(updated_spec_file)
 
