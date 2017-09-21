@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 21 10:52:56 UTC 2017 - lslezak@suse.cz
+
+- Added "build_dependencies" tasks to easily install the build
+  dependencies required for development (bsc#1020033)
+- 1.4.0
+
+-------------------------------------------------------------------
 Thu Jul 13 09:25:16 UTC 2017 - mvidner@suse.com
 
 - check:syntax: Do not print "Syntax OK" for every file.

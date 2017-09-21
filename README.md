@@ -30,6 +30,15 @@ Is available at
 
 ## Explanation of Provided Tasks
 
+### build_dependencies:list
+Scans the `*.spec` files and prints the found `BuildRequires` dependencies.
+This can be used to get the list of packages needed for building the package.
+
+### build_dependencies:install
+Similar to `build_dependencies:list` task but instead of listing them it runs
+`zypper` and installs the packages. This can used to easily install the packages
+which are needed for building the package.
+
 ### check:commited
 Checks if all changes to the local git repository are commited.
 It doesn't check if changes
