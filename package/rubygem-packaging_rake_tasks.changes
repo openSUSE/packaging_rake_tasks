@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Oct 13 12:24:47 UTC 2017 - lslezak@suse.cz
+
+- Avoid "service in progress" error when creating a SR for
+  a freshly commited package (bsc#1063248)
+- 1.4.1
+
+-------------------------------------------------------------------
 Thu Sep 21 10:52:56 UTC 2017 - lslezak@suse.cz
 
 - Added "build_dependencies" tasks to easily install the build
