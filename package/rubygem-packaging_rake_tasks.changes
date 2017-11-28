@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Nov 28 15:50:22 UTC 2017 - lslezak@suse.cz
+
+- Fixed the "rake tarball" task to create reproducible tarballs,
+  avoid different source checksums for the same content in OBS
+  and in IBS (bsc#1070168)
+- 1.4.2
+
+-------------------------------------------------------------------
 Fri Oct 13 12:24:47 UTC 2017 - lslezak@suse.cz
 
 - Avoid "service in progress" error when creating a SR for
