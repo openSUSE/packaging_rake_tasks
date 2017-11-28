@@ -1,18 +1,18 @@
 #--
 # Webyast Webservice framework
 #
-# Copyright (C) 2009, 2010 Novell, Inc. 
+# Copyright (C) 2009, 2010 Novell, Inc.
 #   This library is free software; you can redistribute it and/or modify
 # it only under the terms of version 2.1 of the GNU Lesser General Public
-# License as published by the Free Software Foundation. 
+# License as published by the Free Software Foundation.
 #
 #   This library is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more 
-# details. 
+# FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+# details.
 #
 #   You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software 
+# License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #++
 
@@ -20,6 +20,7 @@
 require 'rake'
 require 'fileutils'
 require "packaging/configuration"
+require "shellwords"
 
 def package_file_name
   config = Packaging::Configuration.instance
@@ -57,8 +58,9 @@ end
 def create_package_task
   require 'rake/packagetask'
   config = Packaging::Configuration.instance
+  # this will just export (copy/link) the files to the target directory,
+  # no tarball created
   Rake::PackageTask.new(config.package_name, config.version) do |p|
-    p.need_tar_bz2 = true
     p.package_dir = Packaging::Configuration.instance.package_dir
 
     add_git_files p
@@ -84,10 +86,29 @@ task :tarball do
 
   # execute the real package task
   config = Packaging::Configuration.instance
+  target = File.join(config.package_dir, package_file_name)
   begin
-    Rake::Task[File.join(config.package_dir, package_file_name+".tar.bz2")].invoke
+    Rake::Task[target].invoke
+    build_tarball
   ensure
-    rm_rf File.join(config.package_dir, package_file_name)
+    rm_rf target
   end
 end
+
+# build the tarball in a reproducible way to have the very same output (bitwise)
+# when called later again and also make the build machine (environmnet) independent
+def build_tarball
+  # set the file time stamps according to the latest commit
+  mtime = `git show -s --format=%ci`.chomp
+  # For the reproducible output:
+  # - use the GNU format (the default POSIX format contains some time stamps)
+  # - sort the files (in a locale independent way)
+  # - set the owner and group to "root"
+  # - set the fixed modification time
+  sh("cd #{Shellwords.escape(Packaging::Configuration.instance.package_dir)} && " \
+    "tar -c -j -f #{Shellwords.escape(package_file_name)}.tar.bz2 --format=gnu " \
+    "--sort=name --owner=root --group=root --mtime=#{Shellwords.escape(mtime)} " \
+    "#{Shellwords.escape(package_file_name)}")
+end
+
 # vim: ft=ruby
