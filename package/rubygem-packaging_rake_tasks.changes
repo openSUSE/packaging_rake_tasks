@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Nov 29 12:06:34 UTC 2017 - lslezak@suse.cz
+
+- Fixed "rake tarball" task to work also with tar < 1.28.
+  (Do not use the "--sort=name" tar option, use a "find | sort"
+  workaround instead. The "--sort" option is not supported in
+  the latest Leap 42.3 or SLE12-SP3.) (bsc#1070168)
+- 1.4.3
+
+-------------------------------------------------------------------
 Tue Nov 28 15:50:22 UTC 2017 - lslezak@suse.cz
 
 - Fixed the "rake tarball" task to create reproducible tarballs,
