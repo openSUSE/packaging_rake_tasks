@@ -109,7 +109,7 @@ def build_tarball
   # - set the owner and group to "root"
   # - set the fixed modification time
   sh("cd #{Shellwords.escape(Packaging::Configuration.instance.package_dir)} && " \
-    "find #{Shellwords.escape(package_file_name)} -type f -print0 | LC_ALL=C sort -z | " \
+    "find #{Shellwords.escape(package_file_name)} -xtype f -print0 | LC_ALL=C sort -z | " \
     "tar -c -j -f #{Shellwords.escape(package_file_name)}.tar.bz2 --format=gnu " \
     "--owner=root --group=root --mtime=#{Shellwords.escape(mtime)} --null --files-from -")
 end
