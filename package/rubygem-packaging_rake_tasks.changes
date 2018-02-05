@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb  5 13:44:37 UTC 2018 - ancor@suse.com
+
+- Do not skip symlinks when creating the tarball, which was an
+  unintented consequence of the previous change (bsc#1078900).
+- 1.4.4
+
+-------------------------------------------------------------------
 Wed Nov 29 12:06:34 UTC 2017 - lslezak@suse.cz
 
 - Fixed "rake tarball" task to work also with tar < 1.28.
