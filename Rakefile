@@ -18,6 +18,9 @@
 
 require 'rake'
 
+# use the latest source to submit
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+
 # load the shared rake files from the package itself
 # skip 'package-local' task, it's redefined here
 require_relative 'lib/packaging/tasks'
