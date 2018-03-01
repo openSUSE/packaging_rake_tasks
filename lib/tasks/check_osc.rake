@@ -29,9 +29,15 @@ namespace :check do
     obs_api = Packaging::Configuration.instance.obs_api
     command_to_set_osc = "osc -A #{obs_api}"
 
+    # the old config path
     osc_rc = File.expand_path("~/.oscrc")
-    if !File.exists? osc_rc
-      raise "missing ~/.oscrc file, please run:\n#{command_to_set_osc}"
+    if !File.exist?(osc_rc)
+      # try the new path
+      osc_rc = File.expand_path("~/.config/osc/oscrc")
+
+      if !File.exist?(osc_rc)
+        raise "missing osc configuration file, please run:\n#{command_to_set_osc}"
+      end
     end
 
     `grep -c '\[#{obs_api}\]' #{osc_rc}`

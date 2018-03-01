@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Mar  1 12:06:29 UTC 2018 - lslezak@suse.cz
+
+- Support the new .oscrc config file location (~/.config/osc/oscrc),
+  the old path (~/.oscrc) is still supported as a fallback
+  (bsc#1083491)
+- 1.4.5
+
+-------------------------------------------------------------------
 Mon Feb  5 13:44:37 UTC 2018 - ancor@suse.com
 
 - Do not skip symlinks when creating the tarball, which was an
