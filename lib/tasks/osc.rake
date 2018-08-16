@@ -163,9 +163,7 @@ namespace :osc do
         command = "yes | osc -A '#{obs_api}' build"
         command << " --no-verify" #ignore untrusted BS projects
         command << " --release=1" #have always same release number
-        # have separated roots per target system, so sharing is more effficient
-        command << " --root=/var/tmp/build-root-#{build_dist}"
-        # store packages for given base system at one place, so it spped up rebuild
+        # store packages for given base system at one place, so it speeds up rebuild
         command << " --keep-pkgs=#{pkg_dir}"
         command << " #{args[:osc_options]}"
         command << " #{build_dist}"
