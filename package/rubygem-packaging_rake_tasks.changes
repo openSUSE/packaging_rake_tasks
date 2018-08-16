@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Aug 16 10:04:54 UTC 2018 - lslezak@suse.cz
+
+- Do not set the "--root" osc option in the "osc:build" task,
+  it is not needed anymore and the default works even better
+  (bsc#1105050)
+- 1.4.6
+
+-------------------------------------------------------------------
 Thu Mar  1 12:06:29 UTC 2018 - lslezak@suse.cz
 
 - Support the new .oscrc config file location (~/.config/osc/oscrc),
