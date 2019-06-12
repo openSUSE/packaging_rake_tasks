@@ -26,15 +26,17 @@ module Packaging
     # is given, this uses spec_version, i.e. the version number of the first
     # .spec file in the package/ subdirectory.
     #
-    # @return String
+    # @return [Boolean] true if the tag was created, false if it already existed
     #
     def create_version_tag(&block)
       name = tag_name(&block)
       if tag_exists?(name)
         puts "Tag #{name} already exists"
+        false
       else
         puts "Creating tag #{name}"
         git("tag #{name}")
+        true
       end
     end
 
