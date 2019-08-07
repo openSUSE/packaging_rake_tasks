@@ -36,8 +36,10 @@ def remove_old_packages
   # remove the old tarball - all versions
   config = Packaging::Configuration.instance
   package_glob = File.join(Dir.pwd,config.package_dir,"#{config.package_name}-*.tar.bz2")
-  Dir[package_glob].each do |d|
-    rm d
+  verbose(verbose == true) do
+    Dir[package_glob].each do |d|
+      rm d
+    end
   end
 end
 
@@ -88,10 +90,17 @@ task :tarball do
   config = Packaging::Configuration.instance
   target = File.join(config.package_dir, package_file_name)
   begin
-    Rake::Task[target].invoke
-    build_tarball
+    puts "* Making a tarball..." if verbose
+    # collapse the middle state to false to silence FileUtils
+    verbose(verbose == true) do
+      Rake::Task[target].invoke
+      build_tarball
+    end
+    puts "* ...Done" if verbose
   ensure
-    rm_rf target
+    verbose(verbose == true) do
+      rm_rf target
+    end
   end
 end
 
