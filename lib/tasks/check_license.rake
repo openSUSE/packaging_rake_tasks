@@ -113,9 +113,9 @@ def license_report
   if ! report[:missing].empty?
     raise "\nMissing license:\n#{report[:missing].join("\n")}"
   end
-  puts "\nSkipped files:\n#{report[:skipped].join("\n")}" if verbose
-  puts "\nCopyright found in these files:\n#{report[:seen].join("\n")}" if verbose
-  puts "\nCopyright detected as not needed in these files:\n#{report[:unneeded].join("\n")}" if verbose
+  puts "\nSkipped files:\n#{report[:skipped].join("\n")}" if verbose == true
+  puts "\nCopyright found in these files:\n#{report[:seen].join("\n")}" if verbose == true
+  puts "\nCopyright detected as not needed in these files:\n#{report[:unneeded].join("\n")}" if verbose == true
   puts "\nAll files have proper license reference." if verbose
 end
 
