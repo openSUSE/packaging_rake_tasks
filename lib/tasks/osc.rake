@@ -52,7 +52,8 @@ namespace :osc do
   end
 
   def checkout
-    sh "osc -A '#{obs_api}' --traceback --verbose checkout '#{obs_project}' #{package_name}"
+    osc_verbose = (verbose == true) ? "--verbose" : ""
+    sh "osc -A '#{obs_api}' --traceback #{osc_verbose} checkout '#{obs_project}' #{package_name}"
   end
 
   def osc_checkout_dir
