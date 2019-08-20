@@ -90,7 +90,7 @@ task :tarball do
   config = Packaging::Configuration.instance
   target = File.join(config.package_dir, package_file_name)
   begin
-    puts "* Making a tarball..." if verbose
+    puts "* Making tarball #{package_file_path} ..." if verbose
     # collapse the middle state to false to silence FileUtils
     verbose(verbose == true) do
       Rake::Task[target].invoke
