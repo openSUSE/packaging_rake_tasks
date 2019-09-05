@@ -49,15 +49,16 @@ module Packaging
       git("tag").include?(name)
     end
 
-    # Read the package version from the first .spec file in the packages/
-    # subdirectory.
+    # Read the package version from specfile_name. If specfile_name is 'nil',
+    # use the first .spec file in the packages/ subdirectory.
     #
     # @return String
     #
-    def spec_version
+    def spec_version(specfile_name = nil)
+      specfile_name |= Dir.glob("package/*.spec").first 
       # use the first *.spec file found, assume all spec files
       # contain the same version
-      File.readlines(Dir.glob("package/*.spec").first)
+      File.readlines(specfile_name)
           .grep(/^\s*Version:\s*/).first.sub("Version:", "").strip
     end
 
