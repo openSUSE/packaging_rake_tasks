@@ -55,7 +55,7 @@ module Packaging
     # @return String
     #
     def spec_version(specfile_name = nil)
-      specfile_name |= Dir.glob("package/*.spec").first 
+      specfile_name |= Dir.glob("#{Packaging::Configuration.instance.package_dir}/*.spec").first 
       # use the first *.spec file found, assume all spec files
       # contain the same version
       File.readlines(specfile_name)
