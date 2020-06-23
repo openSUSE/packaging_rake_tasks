@@ -39,6 +39,10 @@ Similar to `build_dependencies:list` task but instead of listing them it runs
 `zypper` and installs the packages. This can used to easily install the packages
 which are needed for building the package.
 
+### check:changelog
+Checks if there is a supported issue tracker reference in the changelog when
+version in the .spec file has been changed.
+
 ### check:commited
 Checks if all changes to the local git repository are commited.
 It doesn't check if changes

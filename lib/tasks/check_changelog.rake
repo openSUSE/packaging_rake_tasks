@@ -47,7 +47,7 @@ ID_MATCHERS = [
   /osc#(\d+)/,
   /jsc#([[:alpha:]]+\-\d+)/,
   /lf#(\d+)/,
-  /(?:gh|github)#(\w+\/\w+#\d+)/
+  /(?:gh|github)#([a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}\/[\w.-]+#\d+)/i
 ]
 
 namespace "check" do
