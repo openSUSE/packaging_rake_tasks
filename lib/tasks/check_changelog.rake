@@ -46,6 +46,7 @@ ID_MATCHERS = [
   /build#(\d+)/,
   /osc#(\d+)/,
   /jsc#([[:alpha:]]+\-\d+)/,
+  /lf#(\d+)/,
 ]
 
 namespace "check" do
