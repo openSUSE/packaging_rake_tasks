@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Dec  1 14:51:52 UTC 2020 - Ladislav Slezák <lslezak@suse.cz>
+
+- Use the "--non-interactive" zypper option in the
+  "build_dependencies:install" task if not running in a terminal
+  (related to bsc#1179445)
+- 1.4.13
+
+-------------------------------------------------------------------
 Tue Dec  1 08:54:02 UTC 2020 - Ladislav Slezák <lslezak@suse.cz>
 
 - Use "sudo" in the "build_dependencies:install" task only when
