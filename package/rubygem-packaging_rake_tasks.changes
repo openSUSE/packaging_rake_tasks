@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Dec  1 08:54:02 UTC 2020 - Ladislav Slezák <lslezak@suse.cz>
+
+- Do not use "sudo" in the "build_dependencies:install" task when
+  already running as root, "sudo" might not be installed
+  (bsc#1179445)
+- 1.4.12
+
+-------------------------------------------------------------------
 Tue Jun 23 08:08:11 UTC 2020 - David Diaz <dgonzalez@suse.com>
 
 - Add support for using Linux Foundation Bugzilla and Github issues
