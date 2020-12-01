@@ -55,7 +55,8 @@ namespace :build_dependencies do
       puts "Nothing to install, *.spec file not found or no build dependencies defined"
     else
       sudo = Process.euid.zero? ? "" : "sudo"
-      cmd = "#{sudo} zypper install #{escaped_list}"
+      interactive = $stdin.tty? ? "" : "--non-interactive"
+      cmd = "#{sudo} zypper #{interactive} install #{escaped_list}"
       sh(cmd)
     end
   end
