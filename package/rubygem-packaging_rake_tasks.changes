@@ -1,9 +1,9 @@
 -------------------------------------------------------------------
 Tue Dec  1 08:54:02 UTC 2020 - Ladislav Slezák <lslezak@suse.cz>
 
-- Do not use "sudo" in the "build_dependencies:install" task when
-  already running as root, "sudo" might not be installed
-  (bsc#1179445)
+- Use "sudo" in the "build_dependencies:install" task only when
+  running as non-root, "sudo" might not be installed when running
+  as root (bsc#1179445)
 - 1.4.12
 
 -------------------------------------------------------------------
