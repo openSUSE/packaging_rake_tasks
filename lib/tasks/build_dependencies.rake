@@ -54,7 +54,8 @@ namespace :build_dependencies do
     if escaped_list.empty?
       puts "Nothing to install, *.spec file not found or no build dependencies defined"
     else
-      cmd = "sudo zypper install #{escaped_list}"
+      sudo = Process.euid.zero? ? "" : "sudo"
+      cmd = "#{sudo} zypper install #{escaped_list}"
       sh(cmd)
     end
   end
