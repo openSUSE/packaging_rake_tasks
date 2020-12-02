@@ -64,6 +64,9 @@ def license_report
     elsif fn =~ /\.md\z/ || fn =~ /\.doc\z/ || fn =~ /\.txt\z/
       report[:skipped] << "#{fn}: skipped by name match (documentation file)"
       next
+    elsif fn =~ /\.svg\z/ || fn =~ /\.eps\z/
+      report[:skipped] << "#{fn}: skipped by name match (vector image)"
+      next
     end
     skipped = Packaging::Configuration.instance.skip_license_check.any? do |skip|
       res = fn =~ skip

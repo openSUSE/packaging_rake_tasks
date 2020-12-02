@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec  2 09:09:34 UTC 2020 - José Iván López González <jlopez@suse.com>
+
+- Do not check license in vector images (needed for jsc#SLE-16313).
+- 1.4.14
+
+-------------------------------------------------------------------
 Tue Dec  1 14:51:52 UTC 2020 - Ladislav Slezák <lslezak@suse.cz>
 
 - Use the "--non-interactive" zypper option in the
