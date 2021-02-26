@@ -56,7 +56,9 @@ namespace :build_dependencies do
     else
       sudo = Process.euid.zero? ? "" : "sudo"
       interactive = $stdin.tty? ? "" : "--non-interactive"
-      cmd = "#{sudo} zypper #{interactive} install #{escaped_list}"
+      # allow package downgrade to avoid failures in CI when the installed
+      # packages are higher than the available ones
+      cmd = "#{sudo} zypper #{interactive} install --allow-downgrade #{escaped_list}"
       sh(cmd)
     end
   end
