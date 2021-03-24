@@ -239,4 +239,9 @@ namespace :osc do
       end
     end
   end
+
+  desc "Print the current packaging configuration"
+  task :config do
+    puts Packaging::Configuration.instance.summary.join("\n")
+  end
 end

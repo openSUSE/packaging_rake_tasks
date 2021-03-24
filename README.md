@@ -81,6 +81,9 @@ local packages: `rake "osc:build[-p /var/tmp/YaST:Head/openSUSE_Factory]"`
 ### osc:commit
 Commit current state of git tree to OBS devel project. It runs all checks and create package.
 
+### osc:config
+Print the current packaging configuration (OBS project, SR target...).
+
 ### osc:sr
 Creates a submit request to the target OBS project
 (specified with `obs_sr_project` configuration option).
