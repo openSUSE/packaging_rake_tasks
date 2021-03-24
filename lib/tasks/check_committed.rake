@@ -18,7 +18,7 @@
 namespace :check do
   desc "check if everything is committed to git repository"
   task :committed do
-    if ENV["COMMIT_CHECK"] == "0" || ENV["COMMIT_CHECK"] == "false"
+    if ENV["CHECK_COMMITTED"] == "0" || ENV["CHECK_COMMITTED"] == "false"
       puts "WARNING: Skipping Git commit check!"
       next
     end

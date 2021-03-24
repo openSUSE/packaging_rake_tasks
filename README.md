@@ -51,7 +51,7 @@ It doesn't check if changes
 are sent to a remote git repository. Its main intention is to ensure that all
 changes are tracked before making a package.
 
-Note: The check is skipped when environment variable `COMMIT_CHECK` is set to `0`.
+Note: The check is skipped when environment variable `CHECK_COMMITTED` is set to `0`.
 
 ### check:doc
 Checks if code documentation contains issues. It also checks if documentation level
