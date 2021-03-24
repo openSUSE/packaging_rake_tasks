@@ -18,6 +18,11 @@
 namespace :check do
   desc "check if everything is committed to git repository"
   task :committed do
+    if ENV["COMMIT_CHECK"] == "0" || ENV["COMMIT_CHECK"] == "false"
+      puts "WARNING: Skipping Git commit check!"
+      next
+    end
+
     ignored = `git ls-files -o --exclude-standard .`
 
     raise "git ls-files failed." unless $?.exitstatus.zero?
