@@ -51,7 +51,8 @@ It doesn't check if changes
 are sent to a remote git repository. Its main intention is to ensure that all
 changes are tracked before making a package.
 
-Note: The check is skipped when environment variable `CHECK_COMMITTED` is set to `0`.
+Note: It is possible to skip the check for modified files by setting the
+environment variable `CHECK_MODIFIED` is set to `0`.
 
 ### check:doc
 Checks if code documentation contains issues. It also checks if documentation level
@@ -87,7 +88,7 @@ This task checks whether all changes are committed to Git (using the
 with your local changes without committing to Git set `COMMIT_CHECK` to `0`:
 
 ```shell
-rake osc:build COMMIT_CHECK=0
+rake osc:build CHECK_MODIFIED=0
 ```
 
 ### osc:commit

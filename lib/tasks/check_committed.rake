@@ -18,17 +18,17 @@
 namespace :check do
   desc "check if everything is committed to git repository"
   task :committed do
-    if ENV["CHECK_COMMITTED"] == "0" || ENV["CHECK_COMMITTED"] == "false"
-      puts "WARNING: Skipping Git commit check!"
-      next
-    end
-
     ignored = `git ls-files -o --exclude-standard .`
 
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
     if ! ignored.empty?
       raise "New files missing in git (or add them to to .gitignore):\n#{ignored}\n\n"
+    end
+
+    if ENV["CHECK_MODIFIED"] == "0" || ENV["CHECK_MODIFIED"] == "false"
+      puts "WARNING: Skipping modified files check!"
+      next
     end
 
     modified = `git ls-files -m --exclude-standard .`
