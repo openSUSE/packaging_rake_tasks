@@ -43,8 +43,8 @@ which are needed for building the package.
 Checks if there is a supported issue tracker reference in the changelog when
 version in the .spec file has been changed.
 
-### check:commited
-Checks if all changes to the local git repository are commited.
+### check:committed
+Checks if all changes to the local git repository are committed.
 It doesn't check if changes
 are sent to a remote git repository. Its main intention is to ensure that all
 changes are tracked before making a package.
@@ -57,7 +57,7 @@ Currently supported documentation formats: yardoc.
 ### check:license
 Checks if all non-trivial files have a license header.
 It is needed because there are
-countries where implicitely everything is private unless stated otherwise
+countries where implicitly everything is private unless stated otherwise
 and also to help License Digger check licenses.
 The check looks for a "copyright" notice or a prefix `Source:`
 if the file is copied from a different source.

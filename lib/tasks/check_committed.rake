@@ -16,7 +16,7 @@
 
 
 namespace :check do
-  desc "check if everything is commited to git repository"
+  desc "check if everything is committed to git repository"
   task :committed do
     ignored = `git ls-files -o --exclude-standard .`
 
@@ -31,7 +31,7 @@ namespace :check do
     raise "git ls-files failed." unless $?.exitstatus.zero?
 
     if ! modified.empty?
-      raise "Modified files not commited:\n#{modified}"
+      raise "Modified files not committed:\n#{modified}"
     end
   end
 end

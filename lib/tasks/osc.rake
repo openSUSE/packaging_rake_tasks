@@ -227,7 +227,7 @@ namespace :osc do
     desc "Create submit request from devel project to target project without any other packaging or checking"
     task :force do
       # wait for the server service to finish to avoid "service in progress"
-      # error when creating a SR for a freshly commited package
+      # error when creating a SR for a freshly committed package
       puts "Waiting for the server side service..."
       sh "osc", "-A", obs_api, "service", "wait", obs_project, package_name
 
