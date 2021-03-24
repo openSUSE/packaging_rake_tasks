@@ -10,12 +10,14 @@ This gem contains useful tasks for packaging, checking and building with
 
 For a quick start just add to your Rakefile:
 
-    require "packaging"
+```ruby
+require "packaging"
 
-    Packaging.configuration do |conf|
-      conf.obs_project = "<obs_devel_project>"
-      conf.package_name = "<package_name>"
-    end
+Packaging.configuration do |conf|
+    conf.obs_project = "<obs_devel_project>"
+    conf.package_name = "<package_name>"
+end
+```
 
 All shared tasks will be found and loaded automatically,
 you can verify it with `rake -T` command.
@@ -120,33 +122,40 @@ loading.
 
 For example, to exclude the `package` task, replace the `require`
 
-    require "packaging"
+```ruby
+require "packaging"
+```
 
 with
 
-    require "packaging/tasks"
-    Packaging::Tasks.load_tasks(:exclude => ["package.rake"])
+```ruby
+require "packaging/tasks"
+Packaging::Tasks.load_tasks(:exclude => ["package.rake"])
+```
 
 To remove check that is used also as dependency for e.g. package, it is needed
 to remove it also from prerequisites of task. Example how to remove
 check:license and do not call it when creating package.
 
-    require "packaging/tasks"
-    Packaging::Tasks.load_tasks(:exclude => ["check_license.rake"])
-    Rake::Task["package"].prerequisites.delete("check:license")
-
+```ruby
+require "packaging/tasks"
+Packaging::Tasks.load_tasks(:exclude => ["check_license.rake"])
+Rake::Task["package"].prerequisites.delete("check:license")
+```
 
 ## How to Add a New Check for Package
 When a project requires a specific check before making a package
 then implement it and add it to `package` as dependency:
 
-    namespace :check do
-      desc "Check for Y3K compliance"
-      task :y3k do
-         ...
-      end
+```ruby
+namespace :check do
+    desc "Check for Y3K compliance"
+    task :y3k do
+        ...
     end
-    task :package => "check:y3k"
+end
+task :package => "check:y3k"
+```
 
 # Contributing
 
