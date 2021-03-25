@@ -52,7 +52,8 @@ are sent to a remote git repository. Its main intention is to ensure that all
 changes are tracked before making a package.
 
 Note: It is possible to skip the check for modified files by setting the
-environment variable `CHECK_MODIFIED` is set to `0`.
+environment variable `CHECK_MODIFIED` is set to `0`. New or deleted files
+are checked always.
 
 ### check:doc
 Checks if code documentation contains issues. It also checks if documentation level
