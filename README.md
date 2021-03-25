@@ -10,12 +10,14 @@ This gem contains useful tasks for packaging, checking and building with
 
 For a quick start just add to your Rakefile:
 
-    require "packaging"
+```ruby
+require "packaging"
 
-    Packaging.configuration do |conf|
-      conf.obs_project = "<obs_devel_project>"
-      conf.package_name = "<package_name>"
-    end
+Packaging.configuration do |conf|
+    conf.obs_project = "<obs_devel_project>"
+    conf.package_name = "<package_name>"
+end
+```
 
 All shared tasks will be found and loaded automatically,
 you can verify it with `rake -T` command.
@@ -43,11 +45,15 @@ which are needed for building the package.
 Checks if there is a supported issue tracker reference in the changelog when
 version in the .spec file has been changed.
 
-### check:commited
-Checks if all changes to the local git repository are commited.
+### check:committed
+Checks if all changes to the local git repository are committed.
 It doesn't check if changes
 are sent to a remote git repository. Its main intention is to ensure that all
 changes are tracked before making a package.
+
+Note: It is possible to skip the check for modified files by setting the
+environment variable `CHECK_MODIFIED` is set to `0`. New or deleted files
+are checked always.
 
 ### check:doc
 Checks if code documentation contains issues. It also checks if documentation level
@@ -57,7 +63,7 @@ Currently supported documentation formats: yardoc.
 ### check:license
 Checks if all non-trivial files have a license header.
 It is needed because there are
-countries where implicitely everything is private unless stated otherwise
+countries where implicitly everything is private unless stated otherwise
 and also to help License Digger check licenses.
 The check looks for a "copyright" notice or a prefix `Source:`
 if the file is copied from a different source.
@@ -78,8 +84,19 @@ basesystem for more efficient caching.
 An optional argument is passed as options to `osc` and can be used to prefer
 local packages: `rake "osc:build[-p /var/tmp/YaST:Head/openSUSE_Factory]"`
 
+This task checks whether all changes are committed to Git (using the
+[check:committed](#checkcommitted) task). If you want to build the package
+with your local changes without committing to Git set `CHECK_MODIFIED` to `0`:
+
+```shell
+rake osc:build CHECK_MODIFIED=0
+```
+
 ### osc:commit
 Commit current state of git tree to OBS devel project. It runs all checks and create package.
+
+### osc:config
+Print the current packaging configuration (OBS project, SR target...).
 
 ### osc:sr
 Creates a submit request to the target OBS project
@@ -107,33 +124,40 @@ loading.
 
 For example, to exclude the `package` task, replace the `require`
 
-    require "packaging"
+```ruby
+require "packaging"
+```
 
 with
 
-    require "packaging/tasks"
-    Packaging::Tasks.load_tasks(:exclude => ["package.rake"])
+```ruby
+require "packaging/tasks"
+Packaging::Tasks.load_tasks(:exclude => ["package.rake"])
+```
 
 To remove check that is used also as dependency for e.g. package, it is needed
 to remove it also from prerequisites of task. Example how to remove
 check:license and do not call it when creating package.
 
-    require "packaging/tasks"
-    Packaging::Tasks.load_tasks(:exclude => ["check_license.rake"])
-    Rake::Task["package"].prerequisites.delete("check:license")
-
+```ruby
+require "packaging/tasks"
+Packaging::Tasks.load_tasks(:exclude => ["check_license.rake"])
+Rake::Task["package"].prerequisites.delete("check:license")
+```
 
 ## How to Add a New Check for Package
 When a project requires a specific check before making a package
 then implement it and add it to `package` as dependency:
 
-    namespace :check do
-      desc "Check for Y3K compliance"
-      task :y3k do
-         ...
-      end
+```ruby
+namespace :check do
+    desc "Check for Y3K compliance"
+    task :y3k do
+        ...
     end
-    task :package => "check:y3k"
+end
+task :package => "check:y3k"
+```
 
 # Contributing
 

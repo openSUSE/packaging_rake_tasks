@@ -80,5 +80,18 @@ module Packaging
       return @version = File.read(versions.first).strip unless versions.empty?
       raise "cannot find version" #TODO more heuristic
     end
+
+    # configuration summary
+    # @return [Array<String>] human readable summary
+    def summary
+      [
+        "Package directory: #{package_dir}",
+        "OBS instance:      #{obs_api}",
+        "OBS project:       #{obs_project}",
+        "OBS package name:  #{package_name}",
+        "OBS build target:  #{build_dist}",
+        "OBS submit target: #{obs_sr_project}"
+      ]
+    end
   end
 end

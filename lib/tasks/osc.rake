@@ -227,7 +227,7 @@ namespace :osc do
     desc "Create submit request from devel project to target project without any other packaging or checking"
     task :force do
       # wait for the server service to finish to avoid "service in progress"
-      # error when creating a SR for a freshly commited package
+      # error when creating a SR for a freshly committed package
       puts "Waiting for the server side service..."
       sh "osc", "-A", obs_api, "service", "wait", obs_project, package_name
 
@@ -238,5 +238,10 @@ namespace :osc do
         sh "yes | osc -A '#{obs_api}' submitreq --no-cleanup '#{obs_project}' '#{package_name}' '#{obs_sr_project}' -m 'submit new version #{new_version}' --yes"
       end
     end
+  end
+
+  desc "Print the current packaging configuration"
+  task :config do
+    puts Packaging::Configuration.instance.summary.join("\n")
   end
 end
