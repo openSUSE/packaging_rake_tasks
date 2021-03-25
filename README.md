@@ -85,7 +85,7 @@ local packages: `rake "osc:build[-p /var/tmp/YaST:Head/openSUSE_Factory]"`
 
 This task checks whether all changes are committed to Git (using the
 [check:committed](#checkcommitted) task). If you want to build the package
-with your local changes without committing to Git set `COMMIT_CHECK` to `0`:
+with your local changes without committing to Git set `CHECK_MODIFIED` to `0`:
 
 ```shell
 rake osc:build CHECK_MODIFIED=0
