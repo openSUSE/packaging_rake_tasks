@@ -160,8 +160,12 @@ namespace :osc do
       Dir.chdir osc_checkout_dir do
         puts "building package..." if verbose
 
-        # pipe yes to osc build to automatic rebuild broken build root if it happen
-        command = "yes | osc -A '#{obs_api}' build"
+        # feed the "osc build" command with "y" input to automatically rebuild
+        # the broken build root if that happens, three attempts should be enough in most cases
+        # do not use the "yes" command here as the endless output might cause endless loop
+        # (workaround for a broken rpmlint/checkbashisms test,
+        # https://bugzilla.suse.com/show_bug.cgi?id=1190094)
+        command = "echo -e 'y\\ny\\ny\\n' | osc -A '#{obs_api}' build"
         command << " --no-verify" #ignore untrusted BS projects
         command << " --release=1" #have always same release number
         # store packages for given base system at one place, so it speeds up rebuild
