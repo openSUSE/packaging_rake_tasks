@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 spec.name	= "packaging_rake_tasks"
 spec.version	= File.read(File.expand_path("../VERSION", __FILE__)).chomp
 spec.summary	= "Rake tasks providing tasks to package project in git and integration with build service"
-spec.license    = "LGPL v2.1"
+spec.license    = "LGPL-2.1"
 
 # author
 spec.author	= "Josef Reidinger"
