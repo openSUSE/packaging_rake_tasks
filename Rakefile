@@ -69,7 +69,7 @@ end
 
 desc 'Install packaging_rake_tasks gem package'
 task :install => :tarball do
-  sudo = (!Process.euid.zero? && File.exists?("/usr/bin/sudo")) ? "/usr/bin/sudo" : ""
+  sudo = (!Process.euid.zero? && File.exist?("/usr/bin/sudo")) ? "/usr/bin/sudo" : ""
   sh "#{sudo} gem install --local package/packaging_rake_tasks*.gem"
 end
 
