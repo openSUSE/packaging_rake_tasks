@@ -22,17 +22,37 @@ require "open3"
 namespace :build_dependencies do
   def buildrequires
     buildrequires = []
-
+    # OBS additionally runs a default build with empty flavor in multi build packages,
+    # for simplification use it also for single build packages
+    flavors = [ "" ]
     config = Packaging::Configuration.instance
+
+    # parse the _multibuild XML file if it is present
+    mbfile = File.join(config.package_dir, "_multibuild")
+    if File.exist?(mbfile)
+      require "rexml/document"
+      doc = REXML::Document.new(File.read(mbfile))
+
+      flavors = []
+      doc.elements.each("//multibuild/flavor | //multibuild/package") do |node|
+        flavors << node.text.strip
+      end
+
+      puts "Found multibuild targets: #{flavors.reject(&:empty?).join(", ")}" if verbose
+    end
+
     Dir.glob("#{config.package_dir}/*.spec").each do |spec_file|
-      # get the BuildRequires from the spec files, this also expands the RPM macros like %{rubygem}
-      # use Open3 as the command produces some bogus error messages on stderr even on success,
-      # but in case of error it provides a hint what failed
-      stdout, stderr, status = Open3.capture3("rpmspec", "-q", "--buildrequires", spec_file)
+      # replace the "@BUILD_FLAVOR@" placeholder by each flavor defined
+      flavors.each do |flavor|
+        spec_content = File.read(spec_file).gsub("@BUILD_FLAVOR@", flavor)
 
-      raise "Parsing #{spec_file} failed:\n#{stderr}" unless status.success?
-
-      buildrequires.concat(stdout.split("\n"))
+        # get the BuildRequires from the spec files, this also expands the RPM macros like %{rubygem}
+        # use Open3 as the command produces some bogus error messages on stderr even on success,
+        # but in case of error it provides a hint what failed
+        stdout, stderr, status = Open3.capture3("rpmspec", "-q", "--buildrequires", "/dev/stdin", stdin_data: spec_content)
+        raise "Parsing #{spec_file} failed:\n#{stderr}" unless status.success?
+        buildrequires.concat(stdout.split("\n"))
+      end
     end
 
     # remove the duplicates and sort the packages for easier reading
