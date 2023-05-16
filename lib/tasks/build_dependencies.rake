@@ -20,19 +20,46 @@ require "shellwords"
 require "open3"
 
 namespace :build_dependencies do
+  # Read the multi build targets from the "_multibuild" file.
+  # @return [Array<String>] list of multi build targets or empty Array if the
+  #   "_multibuild" file does not exist
+  def multibuild_flavors
+    flavors = []
+
+    # parse the _multibuild XML file if it is present
+    mbfile = File.join(Packaging::Configuration.instance.package_dir, "_multibuild")
+    if File.exist?(mbfile)
+      require "rexml/document"
+      doc = REXML::Document.new(File.read(mbfile))
+      doc.elements.each("//multibuild/flavor | //multibuild/package") do |node|
+        flavors << node.text.strip
+      end
+    end
+
+    puts "Found multibuild targets: #{flavors.join(", ")}" if verbose
+    flavors
+  end
+
+  # Read the build dependencies from all spec files. For multi build packages
+  # evaluate all package flavors.
+  # @return [Array<String>] list of build dependencies
   def buildrequires
     buildrequires = []
+    # OBS additionally runs a default build with empty flavor in multi build packages,
+    # for simplification use it also for single build packages
+    flavors = multibuild_flavors + [ "" ]
+    Dir.glob("#{Packaging::Configuration.instance.package_dir}/*.spec").each do |spec_file|
+      # replace the "@BUILD_FLAVOR@" placeholder by each flavor defined
+      flavors.each do |flavor|
+        spec_content = File.read(spec_file).gsub("@BUILD_FLAVOR@", flavor)
 
-    config = Packaging::Configuration.instance
-    Dir.glob("#{config.package_dir}/*.spec").each do |spec_file|
-      # get the BuildRequires from the spec files, this also expands the RPM macros like %{rubygem}
-      # use Open3 as the command produces some bogus error messages on stderr even on success,
-      # but in case of error it provides a hint what failed
-      stdout, stderr, status = Open3.capture3("rpmspec", "-q", "--buildrequires", spec_file)
-
-      raise "Parsing #{spec_file} failed:\n#{stderr}" unless status.success?
-
-      buildrequires.concat(stdout.split("\n"))
+        # get the BuildRequires from the spec files, this also expands the RPM macros like %{rubygem}
+        # use Open3 as the command produces some bogus error messages on stderr even on success,
+        # but in case of error it provides a hint what failed
+        stdout, stderr, status = Open3.capture3("rpmspec", "-q", "--buildrequires", "/dev/stdin", stdin_data: spec_content)
+        raise "Parsing #{spec_file} (flavor #{flavor.inspect})failed:\n#{stderr}" unless status.success?
+        buildrequires.concat(stdout.split("\n"))
+      end
     end
 
     # remove the duplicates and sort the packages for easier reading
