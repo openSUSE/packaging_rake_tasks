@@ -18,6 +18,7 @@
 
 require "shellwords"
 require "open3"
+require "tempfile"
 
 namespace :build_dependencies do
   # Read the multi build targets from the "_multibuild" file.
@@ -36,7 +37,7 @@ namespace :build_dependencies do
       end
     end
 
-    puts "Found multibuild targets: #{flavors.join(", ")}" if verbose
+    puts "Found multibuild targets: #{flavors.join(", ")}" if verbose && !flavors.empty?
     flavors
   end
 
@@ -51,14 +52,23 @@ namespace :build_dependencies do
     Dir.glob("#{Packaging::Configuration.instance.package_dir}/*.spec").each do |spec_file|
       # replace the "@BUILD_FLAVOR@" placeholder by each flavor defined
       flavors.each do |flavor|
-        spec_content = File.read(spec_file).gsub("@BUILD_FLAVOR@", flavor)
+        spec_content = File.read(spec_file).gsub!("@BUILD_FLAVOR@", flavor)
 
-        # get the BuildRequires from the spec files, this also expands the RPM macros like %{rubygem}
-        # use Open3 as the command produces some bogus error messages on stderr even on success,
-        # but in case of error it provides a hint what failed
-        stdout, stderr, status = Open3.capture3("rpmspec", "-q", "--buildrequires", "/dev/stdin", stdin_data: spec_content)
-        raise "Parsing #{spec_file} (flavor #{flavor.inspect})failed:\n#{stderr}" unless status.success?
-        buildrequires.concat(stdout.split("\n"))
+        if spec_content.nil?
+          # no replacement, use the file directly
+          stdout = `rpmspec -q --buildrequires #{spec_file.shellescape}`
+          raise "Parsing #{spec_file} failed" unless $?.success?
+          buildrequires.concat(stdout.split("\n"))
+        else
+          # rpmspec can only read a file, write the processed data to a temporary file
+          Tempfile.create(["rake_build_deps-", ".spec"]) do |tmp|
+            tmp.write(spec_content)
+            tmp.flush
+            stdout = `rpmspec -q --buildrequires #{tmp.path.shellescape}`
+            raise "Parsing #{spec_file} (flavor #{flavor.inspect}) failed" unless $?.success?
+            buildrequires.concat(stdout.split("\n"))
+          end
+        end
       end
     end
 
