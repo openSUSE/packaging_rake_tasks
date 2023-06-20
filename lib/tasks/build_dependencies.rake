@@ -41,6 +41,13 @@ namespace :build_dependencies do
     flavors
   end
 
+  # Read the build dependencies from a file
+  def buildrequires_from_file(file)
+    stdout = `rpmspec -q --buildrequires #{file.shellescape}`
+    raise "Parsing #{file} failed" unless $?.success?
+    stdout.split("\n")
+  end
+
   # Read the build dependencies from all spec files. For multi build packages
   # evaluate all package flavors.
   # @return [Array<String>] list of build dependencies
@@ -56,17 +63,13 @@ namespace :build_dependencies do
 
         if spec_content.nil?
           # no replacement, use the file directly
-          stdout = `rpmspec -q --buildrequires #{spec_file.shellescape}`
-          raise "Parsing #{spec_file} failed" unless $?.success?
-          buildrequires.concat(stdout.split("\n"))
+          buildrequires.concat(buildrequires_from_file(spec_file))
         else
           # rpmspec can only read a file, write the processed data to a temporary file
           Tempfile.create(["rake_build_deps-", ".spec"]) do |tmp|
             tmp.write(spec_content)
             tmp.flush
-            stdout = `rpmspec -q --buildrequires #{tmp.path.shellescape}`
-            raise "Parsing #{spec_file} (flavor #{flavor.inspect}) failed" unless $?.success?
-            buildrequires.concat(stdout.split("\n"))
+            buildrequires.concat(buildrequires_from_file(tmp.path))
           end
         end
       end
